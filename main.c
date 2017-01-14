@@ -7,9 +7,9 @@
 //
 
 #include <stdio.h>
+#include "Sorted.h"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    printf("Hello, World!\n");
+    Sorted_CreateFile("popp");
     return 0;
 }
