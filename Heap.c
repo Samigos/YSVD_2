@@ -264,7 +264,7 @@ Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const 
     for (k = 0; k < numOfRecords; k++) {
         for (j = 0; j < numOfRecords; j++) {
             if (fieldNo == 0) {
-                if (recordsArray[k].id > recordsArray[j].id) {
+                if (recordsArray[k].id < recordsArray[j].id) {
                     const Record tempRecord = recordsArray[j];
                     
                     recordsArray[j] = recordsArray[k];
@@ -272,7 +272,7 @@ Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const 
                 }
             }
             else if (fieldNo == 1) {
-                if (strcmp(recordsArray[k].name, recordsArray[j].name) > 0) {
+                if (strcmp(recordsArray[k].name, recordsArray[j].name) < 0) {
                     const Record tempRecord = recordsArray[j];
                     
                     recordsArray[j] = recordsArray[k];
@@ -280,7 +280,7 @@ Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const 
                 }
             }
             else if (fieldNo == 2) {
-                if (strcmp(recordsArray[k].surname, recordsArray[j].surname) > 0) {
+                if (strcmp(recordsArray[k].surname, recordsArray[j].surname) < 0) {
                     const Record tempRecord = recordsArray[j];
                     
                     recordsArray[j] = recordsArray[k];
@@ -288,7 +288,7 @@ Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const 
                 }
             }
             else if (fieldNo == 3) {
-                if (strcmp(recordsArray[k].city, recordsArray[j].city) > 0) {
+                if (strcmp(recordsArray[k].city, recordsArray[j].city) < 0) {
                     const Record tempRecord = recordsArray[j];
                     
                     recordsArray[j] = recordsArray[k];

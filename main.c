@@ -12,7 +12,7 @@ void insert_Entries(int);
 
 int main(int argc, char **argv) {
     int fd;
-    int fieldNo = 0;
+    int fieldNo = 1;
    
     BF_Init();
     
