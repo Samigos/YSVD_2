@@ -84,7 +84,7 @@ void insert_Entries(int fd) {
         pch[strlen(pch) - 1] = 0;
         strncpy(record.city, pch, sizeof(record.city));
         
-        printf("--- %d, %s, %s, %s\n", record.id, record.name, record.surname, record.city);
+        //printf("--- %d, %s, %s, %s\n", record.id, record.name, record.surname, record.city);
         
         assert(!HP_InsertEntry(fd, record));
     }
