@@ -197,7 +197,7 @@ int HP_SplitFiles(const int fileDesc) {
     printf("%d\n", numOfBlocks);
     // -------------------------------------
     
-    for (index = 1; index < numOfBlocks; index++) {
+    for (index = 1; index < 100000; index++) {
         void *block;
         int fileDesc;
         
