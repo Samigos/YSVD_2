@@ -194,7 +194,7 @@ int HP_SplitFiles(const int fileDesc) {
         BF_PrintError("Error getting block counter in HP_SplitFiles");
         return -1;
     }
-    
+    printf("%d\n", numOfBlocks);
     // -------------------------------------
     
     for (index = 1; index < numOfBlocks; index++) {
