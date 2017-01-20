@@ -278,11 +278,11 @@ Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const 
     if (fieldNo == 0) {
         for (k = 0; k < numOfRecords; k++) {
             for (j = 0; j < numOfRecords; j++) {
-                if (recordsArray[k].id < recordsArray[j].id) {
-                    const Record tempRecord = recordsArray[j];
+                if (recordsArray[k].id > recordsArray[j].id) {
+                    const Record tempRecord = recordsArray[k];
                     
-                    recordsArray[j] = recordsArray[k];
-                    recordsArray[k] = tempRecord;
+                    recordsArray[k] = recordsArray[j];
+                    recordsArray[j] = tempRecord;
                 }
             }
         }
@@ -290,11 +290,11 @@ Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const 
     else if (fieldNo == 1) {
         for (k = 0; k < numOfRecords; k++) {
             for (j = 0; j < numOfRecords; j++) {
-                if (strcmp(recordsArray[k].name, recordsArray[j].name) < 0) {
-                    const Record tempRecord = recordsArray[j];
+                if (strcmp(recordsArray[k].name, recordsArray[j].name) > 0) {
+                    const Record tempRecord = recordsArray[k];
                     
-                    recordsArray[j] = recordsArray[k];
-                    recordsArray[k] = tempRecord;
+                    recordsArray[k] = recordsArray[j];
+                    recordsArray[j] = tempRecord;
                 }
             }
         }
@@ -302,11 +302,11 @@ Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const 
     else if (fieldNo == 2) {
         for (k = 0; k < numOfRecords; k++) {
             for (j = 0; j < numOfRecords; j++) {
-                if (strcmp(recordsArray[k].surname, recordsArray[j].surname) < 0) {
-                    const Record tempRecord = recordsArray[j];
+                if (strcmp(recordsArray[k].surname, recordsArray[j].surname) > 0) {
+                    const Record tempRecord = recordsArray[k];
                     
-                    recordsArray[j] = recordsArray[k];
-                    recordsArray[k] = tempRecord;
+                    recordsArray[k] = recordsArray[j];
+                    recordsArray[j] = tempRecord;
                 }
             }
         }
@@ -314,11 +314,11 @@ Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const 
     else if (fieldNo == 3) {
         for (k = 0; k < numOfRecords; k++) {
             for (j = 0; j < numOfRecords; j++) {
-                if (strcmp(recordsArray[k].city, recordsArray[j].city) < 0) {
-                    const Record tempRecord = recordsArray[j];
+                if (strcmp(recordsArray[k].city, recordsArray[j].city) > 0) {
+                    const Record tempRecord = recordsArray[k];
                     
-                    recordsArray[j] = recordsArray[k];
-                    recordsArray[k] = tempRecord;
+                    recordsArray[k] = recordsArray[j];
+                    recordsArray[j] = tempRecord;
                 }
             }
         }
