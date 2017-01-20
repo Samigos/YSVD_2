@@ -107,6 +107,17 @@ int HP_CloseFile(int fileDesc) {
     return -1;
 }
 
+
+int HP_DeleteFile(const char* fileName) {
+    if (remove(fileName) < 0) {
+        printf("\nThe %s file couldn't be deleted!", fileName);
+        perror("Error");
+        
+        return -1;
+	}
+}
+    
+
 // ------------------------------------------------
 // At first, check if the current number of blocks,
 // equals 1. If it does, create a new block,
@@ -268,14 +279,6 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         return -1;
     }
 
-    int HP_DeleteFile(const char* fileName) {
-    if (remove(fileName) < 0) {
-        printf("\nThe %s file couldn't be deleted!", fileName);
-        perror("Error");
-        
-        return -1;
-    }
-    
     
     return 0;
 }
@@ -307,7 +310,7 @@ int HP_MergeFiles(char* firstFileName, char* secondFileName, const int fieldNo){
     
     // -------------------------------------
 	
-	for (blockIndex = 1; blockIndex < numberOfBlocks; blockIndex++){
+	for (blockIndex = 1; blockIndex < firstnumberOfBlocks; blockIndex++){
 		
 		void *block1, *block2;
         	int currentFileDesc;
