@@ -251,7 +251,6 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
             
             for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock; recordIndex++) {
                 memcpy(&rec, block + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
-                printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
 
                 if (strcmp(fieldName, "all") == 0 && rec.id > 0)
                     printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
