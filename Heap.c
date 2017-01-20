@@ -187,35 +187,118 @@ int HP_InsertEntry(int fileDesc, Record record) {
 	return 0;
 }
 
-int HP_SplitFiles(const int fileDesc) {
-    int numOfBlocks, index;
+int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
+    int numberOfBlocks, blockIndex;
+    int initialHeapFileDesc;
     
-    if ((numOfBlocks = BF_GetBlockCounter(fileDesc)) < 0) {
+    if ((initialHeapFileDesc = HP_OpenFile(initialHeapFileName) < 0)) {
+        BF_PrintError("Error getting block in HP_SplitFiles");
+        return -1;
+    }
+    
+    if ((numberOfBlocks = BF_GetBlockCounter(initialHeapFileDesc)) < 0) {
         BF_PrintError("Error getting block counter in HP_SplitFiles");
         return -1;
     }
-    printf("%d\n", numOfBlocks);
+    
     // -------------------------------------
     
-    for (index = 1; index < numOfBlocks; index++) {
+    for (blockIndex = 1; blockIndex < numberOfBlocks; blockIndex++) {
         void *block;
-        int fileDesc;
+        int currentFileDesc;
+        
+        if (BF_ReadBlock(initialHeapFileDesc, blockIndex, &block) < 0) {
+            BF_PrintError("Error getting block in HP_SplitFiles");
+            return -1;
+        }
+        
+        int numberOfRecordsInBlock;
+        memcpy(&numberOfRecordsInBlock, block, sizeof(int));
+        
+        int recordIndex;
+        Record* records = malloc(sizeof(Record) * numberOfRecordsInBlock);
+        
+        for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock; recordIndex++) {
+            memcpy(&records[recordIndex-1], block + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
+        }
+        
+        records = bubbleSortedRecords(records, numberOfRecordsInBlock, fieldNo);
+        
+        // -------------------------------------
         
         char tempFileName[15];
         strcpy(tempFileName, "temp_");
         
         char num[7];
-        sprintf(num, "%d", index);
+        sprintf(num, "%d", blockIndex);
         strcat(tempFileName, num);
-        printf("----- %s\n", tempFileName);
+        
+        // -------------------------------------
+        
+        printf("Creating %s heap file...\n", tempFileName);
         
         if (HP_CreateFile(tempFileName) < 0) {
             BF_PrintError("Error creating heap file in HP_SplitFiles");
             return -1;
         }
+        
+        if ((currentFileDesc = HP_OpenFile(tempFileName) < 0)) {
+            BF_PrintError("Error getting block in HP_SplitFiles");
+            return -1;
+        }
+        
+        // -------------------------------------
+        
+        for (recordIndex = 0; recordIndex < numberOfRecordsInBlock; recordIndex++) {
+            printf("record %d: %d, %s, %s, %s\n", recordIndex+1, records[recordIndex].id, records[recordIndex].name, records[recordIndex].surname, records[recordIndex].city);
+            HP_InsertEntry(currentFileDesc, records[recordIndex]);
+        }
     }
     
     return 0;
+}
+
+Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const int fieldNo) {
+    int k, j;
+    
+    for (k = 0; k < numOfRecords; k++) {
+        for (j = 0; j < numOfRecords; j++) {
+            if (fieldNo == 0) {
+                if (recordsArray[k].id > recordsArray[j].id) {
+                    const Record tempRecord = recordsArray[j];
+                    
+                    recordsArray[j] = recordsArray[k];
+                    recordsArray[k] = tempRecord;
+                }
+            }
+            else if (fieldNo == 1) {
+                if (strcmp(recordsArray[k].name, recordsArray[j].name) > 0) {
+                    const Record tempRecord = recordsArray[j];
+                    
+                    recordsArray[j] = recordsArray[k];
+                    recordsArray[k] = tempRecord;
+                }
+            }
+            else if (fieldNo == 2) {
+                if (strcmp(recordsArray[k].surname, recordsArray[j].surname) > 0) {
+                    const Record tempRecord = recordsArray[j];
+                    
+                    recordsArray[j] = recordsArray[k];
+                    recordsArray[k] = tempRecord;
+                }
+            }
+            else if (fieldNo == 3) {
+                if (strcmp(recordsArray[k].city, recordsArray[j].city) > 0) {
+                    const Record tempRecord = recordsArray[j];
+                    
+                    recordsArray[j] = recordsArray[k];
+                    recordsArray[k] = tempRecord;
+                }
+            }
+        }
+    }
+    
+    return recordsArray;
 }
 
 // ------------------------------------------------

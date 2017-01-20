@@ -74,6 +74,7 @@ void HP_GetAllEntries(
 	void *value			/* τιμή του πεδίου προς σύγκριση */
 	);
 
-int HP_SplitFiles(const int);
+int HP_SplitFiles(char*, const int);
+Record* bubbleSortedRecords(Record*, const int, const int);
 
 #endif
