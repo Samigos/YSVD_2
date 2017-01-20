@@ -22,8 +22,7 @@ int HP_SplitFiles(char*, const int);
 int HP_DeleteFile(const char*);
 int HP_MergeFiles(char*, char*, const int);
 
-
 Record* bubbleSortedRecords(Record*, const int, const int);
-Record* Mergesort(Record*, Record*, const int, const int, const int);
+Record* mergeSortedRecords(Record*, Record*, const int, const int, const int);
 
 #endif
