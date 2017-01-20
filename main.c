@@ -51,6 +51,40 @@ int main(int argc, char **argv) {
 }
 
 void insert_Entries(int fd) {
-    //TO DO
-    //read from input stream and write on fd
+//void insert_Entries(EH_info *info) {
+    FILE *stream;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    stream = stdin;
+    Record record;
+
+    while ((read = getline(&line, &len, stream)) != -1) {
+        line[read - 2] = 0;
+        char *pch;
+
+        pch = strtok(line, ",");
+        record.id = atoi(pch);
+
+        pch = strtok(NULL, ",");
+        pch++;
+        pch[strlen(pch) - 1] = 0;
+        strncpy(record.name, pch, sizeof(record.name));
+
+        pch = strtok(NULL, ",");
+        pch++;
+        pch[strlen(pch) - 1] = 0;
+        strncpy(record.surname, pch, sizeof(record.surname));
+
+        pch = strtok(NULL, ",");
+        pch++;
+        pch[strlen(pch) - 1] = 0;
+        strncpy(record.city, pch, sizeof(record.city));
+
+        assert(!HP_InsertEntry(fd, record));
+    }
+    free(line);
+}
+    
+    return 0;
 }
