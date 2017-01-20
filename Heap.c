@@ -204,7 +204,7 @@ int HP_SplitFiles(const int fileDesc) {
         char tempFileName[15];
         strcpy(tempFileName, "temp_");
         
-        char* num;
+        char num[6];
         sprintf(num, "%d", index);
         strcat(tempFileName, num);
         printf("----- %s\n", tempFileName);
