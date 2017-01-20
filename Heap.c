@@ -249,7 +249,7 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
             int numberOfRecordsInBlock;
             memcpy(&numberOfRecordsInBlock, block , sizeof(int));
             
-            for (recordIndex = 1; recordIndex <= (int)(BLOCK_SIZE / sizeof(Record)); recordIndex++) {
+            for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock; recordIndex++) {
                 memcpy(&rec, block + (recordIndex * sizeof(Record)), sizeof(Record));
                 
                 if (strcmp(fieldName, "all") == 0 && rec.id > 0)
