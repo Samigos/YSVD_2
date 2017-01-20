@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 }
 
 void insert_Entries(int fd) {
-//void insert_Entries(EH_info *info) {
+
     FILE *stream;
     char *line = NULL;
     size_t len = 0;
