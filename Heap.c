@@ -183,7 +183,6 @@ int HP_InsertEntry(int fileDesc, Record record) {
         return -1;
     }
     
-   
 	return 0;
 }
 
@@ -208,7 +207,6 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
     }
     
     // -------------------------------------
-    printf("Mpikaaaaaaa 1, numOfBlocks %d\n\n", numOfBlocks);
     
     int blockIndex, recordIndex;
     
@@ -242,8 +240,6 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
         }
     }
     else {
-        printf("Mpikaaaaaaa 2\n\n");
-        
         for (blockIndex = 1; blockIndex < numOfBlocks; blockIndex++) {
             if (BF_ReadBlock(fileDesc, blockIndex, &block) < 0) {
                 BF_PrintError("Error getting block in HP_GetAllEntries");
@@ -252,8 +248,6 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
             
             int numberOfRecordsInBlock;
             memcpy(&numberOfRecordsInBlock, block , sizeof(int));
-            
-            printf("numberOfRecordsInBlock %d: %d\n", blockIndex, numberOfRecordsInBlock);
             
             for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock; recordIndex++) {
                 memcpy(&rec, block + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
