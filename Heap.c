@@ -107,6 +107,17 @@ int HP_CloseFile(int fileDesc) {
     return -1;
 }
 
+int HP_DeleteFile(const char* fileName) {
+    if (remove(fileName) < 0) {
+        printf("\nThe %s file couldn't be deleted!", fileName);
+        perror("Error");
+        
+        return -1;
+    }
+    
+    return 0;
+}
+
 // ------------------------------------------------
 // At first, check if the current number of blocks,
 // equals 1. If it does, create a new block,

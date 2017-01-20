@@ -19,6 +19,8 @@ int HP_CloseFile(int fileDesc);
 int HP_InsertEntry(int fileDesc, Record record);
 void HP_GetAllEntries(int fileDesc, char* fieldName, void* value);
 int HP_SplitFiles(char*, const int);
+int HP_DeleteFile(const char*);
+
 Record* bubbleSortedRecords(Record*, const int, const int);
 
 #endif
