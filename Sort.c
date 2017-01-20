@@ -112,9 +112,9 @@ int Sorted_CloseFile(int fileDesc) {
     return 0;
 }
 
-int Sorted_InsertEntry(int fileDesc, Record record) {
-    return 0;
-}
+//int Sorted_InsertEntry(int fileDesc, Record record) {
+//    return 0;
+//}
 
 void Sorted_SortFile(char* fileName, int fieldNo) {
     

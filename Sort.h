@@ -11,17 +11,10 @@
 
 #include "BF.h"
 
-typedef struct Record {
-    int id;
-    char name[15];
-    char surname[20];
-    char city[25];
-} Record;
-
 int Sorted_CreateFile(char*);
 int Sorted_OpenFile(char*);
 int Sorted_CloseFile(int);
-int Sorted_InsertEntry(int, Record);
+//int Sorted_InsertEntry(int, Record);
 void Sorted_SortFile(char*, int);
 void Sorted_checkSortedFile(char*, int);
 void Sorted_GetAllEntries(int, int*, void*);

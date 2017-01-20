@@ -196,6 +196,7 @@ int HP_InsertEntry(int fileDesc, Record record) {
 void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
     void* block;
     int numOfBlocks;
+    
     Record rec;
     
     // -------------------------------------
@@ -218,8 +219,11 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
                 return;
             }
             
-            for (recordIndex = 1; recordIndex <= (int)(BLOCK_SIZE / sizeof(Record)); recordIndex++) {
-                memcpy(&rec, block + ((recordIndex - 1) * sizeof(Record)), sizeof(Record));
+            int numberOfRecordsInBlock;
+            memcpy(&numberOfRecordsInBlock, block , sizeof(int));
+            
+            for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock; recordIndex++) {
+                memcpy(&rec, block + (recordIndex * sizeof(Record)), sizeof(Record));
                 
                 if (rec.id == (int)value) {
                     printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
@@ -242,8 +246,11 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
                 return;
             }
             
+            int numberOfRecordsInBlock;
+            memcpy(&numberOfRecordsInBlock, block , sizeof(int));
+            
             for (recordIndex = 1; recordIndex <= (int)(BLOCK_SIZE / sizeof(Record)); recordIndex++) {
-                memcpy(&rec, block + ((recordIndex - 1) * sizeof(Record)), sizeof(Record));
+                memcpy(&rec, block + (recordIndex * sizeof(Record)), sizeof(Record));
                 
                 if (strcmp(fieldName, "all") == 0 && rec.id > 0)
                     printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);

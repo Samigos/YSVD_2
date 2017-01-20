@@ -3,7 +3,8 @@
 #include <string.h>
 #include <assert.h>
 #include "BF.h"
-#include "Sorted.h"
+#include "Sort.h"
+#include "Heap.h"
 
 #define fileName "heapFile"
 
@@ -24,14 +25,17 @@ int main(int argc, char **argv) {
     if (fd == -1)
         printf("Error opening file!\n");
     
+    
+    
+    HP_CreateFile("stavros");
+    fd = HP_OpenFile("stavros");
+    
     insert_Entries(fd);
+    HP_GetAllEntries(fd, "name", "Sung");
     
     //sort heap file using 2-way merge-sort
-    if (Sorted_SortFile(fileName, 0) == -1)
-        printf("Error sorting file!\n");
-    
-    if (Sorted_checkSortedFile("heapFileSorted", 0) == -1)
-        printf("Error sorting file!\n");
+    Sorted_SortFile(fileName, 0);
+    Sorted_checkSortedFile("heapFileSorted", 0);
     
     //get all entries with value
     //char value[20];
@@ -51,7 +55,6 @@ int main(int argc, char **argv) {
 }
 
 void insert_Entries(int fd) {
-
     FILE *stream;
     char *line = NULL;
     size_t len = 0;
@@ -80,11 +83,9 @@ void insert_Entries(int fd) {
         pch++;
         pch[strlen(pch) - 1] = 0;
         strncpy(record.city, pch, sizeof(record.city));
-
+        
         assert(!HP_InsertEntry(fd, record));
     }
-    free(line);
-}
     
-    return 0;
+    free(line);
 }
