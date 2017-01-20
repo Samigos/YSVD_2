@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "BF.h"
 #include "Heap.h"
@@ -12,7 +13,7 @@
 
 int HP_CreateFile(char* fileName) {
     void *block;
-    int fileDesc, blockNumber = BF_ID;
+    int fileDesc, blockNumber = HEAP_FILE_ID;
 
     if (BF_CreateFile(fileName) < 0) {
         BF_PrintError("Error creating file in HP_CreateFile");
@@ -84,7 +85,7 @@ int HP_OpenFile(char* fileName) {
     
     memcpy(&blockNumber, block, sizeof(int));
     
-    if (blockNumber != BF_ID) {
+    if (blockNumber != HEAP_FILE_ID) {
         printf("\n\nError: The file you opened, isn't a heap file!\n\n");
         BF_CloseFile(fileDesc);
         
@@ -186,6 +187,37 @@ int HP_InsertEntry(int fileDesc, Record record) {
 	return 0;
 }
 
+int HP_SplitFiles(const int fileDesc) {
+    int numOfBlocks, index;
+    
+    if ((numOfBlocks = BF_GetBlockCounter(fileDesc)) < 0) {
+        BF_PrintError("Error getting block counter in HP_SplitFiles");
+        return -1;
+    }
+    
+    // -------------------------------------
+    
+    for (index = 1; index < numOfBlocks; index++) {
+        void *block;
+        int fileDesc;
+        
+        char tempFileName[15];
+        strcpy(tempFileName, "temp_");
+        
+        char* num;
+        sprintf(num, "%d", index);
+        strcat(tempFileName, num);
+        printf("----- %s\n", tempFileName);
+        
+        if (HP_CreateFile(tempFileName) < 0) {
+            BF_PrintError("Error creating heap file in HP_SplitFiles");
+            return -1;
+        }
+    }
+    
+    return 0;
+}
+
 // ------------------------------------------------
 // At first, get the current number of blocks.
 // After that, check the fieldName and act as following;
@@ -254,7 +286,7 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
 
                 if (strcmp(fieldName, "all") == 0 && rec.id > 0)
                     printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
-                else if (strcmp(fieldName, "name") == 0){
+                else if (strcmp(fieldName, "name") == 0) {
                     if (strcmp(rec.name, (char*)value) == 0)
                         printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
                 }

@@ -1,7 +1,8 @@
 #ifndef Heap_h
 #define Heap_h
 
-#define BF_ID 216250 // Special information for the first block of a heap file
+#define HEAP_FILE_ID 216250 // Special information for the first block of a heap file
+#define SORT_FILE_ID 1216250 // Special information for the first block of a heap file
 
 #define TRUE 1
 #define FALSE 0
@@ -72,5 +73,7 @@ void HP_GetAllEntries(
 	char* fieldName,	/* όνομα του πεδίου για το οποίο γίνεται ο έλεγχος */
 	void *value			/* τιμή του πεδίου προς σύγκριση */
 	);
+
+int HP_SplitFiles(const int);
 
 #endif
