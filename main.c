@@ -29,6 +29,8 @@ int main(int argc, char **argv) {
     fd = HP_OpenFile(fileName);
     
     insert_Entries(fd);
+    HP_CloseFile(fd);
+    
     HP_SplitFiles(fileName, fieldNo);
     //HP_GetAllEntries(fd, "name", "Sung");
     
