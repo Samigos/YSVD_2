@@ -183,22 +183,7 @@ int HP_InsertEntry(int fileDesc, Record record) {
         return -1;
     }
     
-    if (BF_ReadBlock(fileDesc, numberOfBlocks - 1, &block) < 0) {
-        BF_PrintError("Error getting block in HP_InsertEntry");
-        return -1;
-    }
-    
-    int numberOfRecordsInBlock2, recordIndex;
-    memcpy(&numberOfRecordsInBlock2, block , sizeof(int));
-
-    printf("\nInsert of %d, %s, %s, %s\n", record.id, record.name, record.surname, record.city);
-    for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock2; recordIndex++) {
-        Record rec;
-        
-        memcpy(&rec, block + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
-        printf("Reading %d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
-    }
-    
+   
 	return 0;
 }
 

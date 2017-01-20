@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     fd = HP_OpenFile("stavros");
     
     insert_Entries(fd);
-    //HP_GetAllEntries(fd, "name", "Sung");
+    HP_GetAllEntries(fd, "name", "Sung");
     
     //sort heap file using 2-way merge-sort
     Sorted_SortFile(fileName, 0);
