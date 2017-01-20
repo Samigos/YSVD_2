@@ -11,6 +11,8 @@
 
 #include "BF.h"
 
+#define SORT_FILE_ID 1216250 // Special information for the first block of a heap file
+
 int Sorted_CreateFile(char*);
 int Sorted_OpenFile(char*);
 int Sorted_CloseFile(int);
