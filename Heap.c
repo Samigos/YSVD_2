@@ -188,8 +188,7 @@ int HP_InsertEntry(int fileDesc, Record record) {
 }
 
 int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
-    int numberOfBlocks, blockIndex;
-    int initialHeapFileDesc;
+    int numberOfBlocks, initialHeapFileDesc;
     
     if ((initialHeapFileDesc = HP_OpenFile(initialHeapFileName) < 0)) {
         BF_PrintError("Error opening initial heap file in HP_SplitFiles");
@@ -203,8 +202,10 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     
     // -------------------------------------
     
+    int blockIndex;
+    
     for (blockIndex = 1; blockIndex < numberOfBlocks; blockIndex++) {
-        void *block;
+        void* block;
         int currentFileDesc;
         
         if (BF_ReadBlock(initialHeapFileDesc, blockIndex, &block) < 0) {
@@ -257,10 +258,10 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         
         // -------------------------------------
         
-        if (HP_CloseFile(currentFileDesc) < 0) {
-            BF_PrintError("Error closing heap file in HP_SplitFiles");
-            return -1;
-        }
+//        if (HP_CloseFile(currentFileDesc) < 0) {
+//            BF_PrintError("Error closing heap file in HP_SplitFiles");
+//            return -1;
+//        }
     }
     
     if (HP_CloseFile(initialHeapFileDesc) < 0) {
