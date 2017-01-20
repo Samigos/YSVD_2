@@ -253,6 +253,13 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             printf("record %d: %d, %s, %s, %s\n", recordIndex+1, records[recordIndex].id, records[recordIndex].name, records[recordIndex].surname, records[recordIndex].city);
             HP_InsertEntry(currentFileDesc, records[recordIndex]);
         }
+        
+        // -------------------------------------
+        
+        if (HP_CloseFile(currentFileDesc) < 0) {
+            BF_PrintError("Error closing heap file in HP_SplitFiles");
+            return -1;
+        }
     }
     
     return 0;
