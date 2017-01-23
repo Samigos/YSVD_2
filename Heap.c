@@ -272,15 +272,10 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         
         // -------------------------------------
         
-//        if (HP_CloseFile(currentFileDesc) < 0) {
-//            BF_PrintError("Error closing heap file in HP_SplitFiles");
-//            return -1;
-//        }
-    }
-    
-    if (HP_CloseFile(initialHeapFileDesc) < 0) {
-        BF_PrintError("Error closing initial heap file in HP_SplitFiles");
-        return -1;
+        if (HP_CloseFile(currentFileDesc) < 0) {
+            BF_PrintError("Error closing heap file in HP_SplitFiles");
+            return -1;
+        }
     }
     
     // -------------------------------------
@@ -308,6 +303,11 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         }
         
         numberOfFiles /= 2;
+    }
+    
+    if (HP_CloseFile(initialHeapFileDesc) < 0) {
+        BF_PrintError("Error closing initial heap file in HP_SplitFiles");
+        return -1;
     }
     
     return 0;
