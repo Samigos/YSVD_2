@@ -20,7 +20,7 @@ int HP_InsertEntry(int fileDesc, Record record);
 void HP_GetAllEntries(int fileDesc, char* fieldName, void* value);
 int HP_SplitFiles(char*, const int);
 int HP_DeleteFile(const char*);
-int HP_MergeFiles(char*, char*, const int);
+int HP_MergeFiles(char*, char*, char*, const int);
 
 Record* bubbleSortedRecords(Record*, const int, const int);
 Record* mergeSortedRecords(Record*, Record*, const int, const int, const int);

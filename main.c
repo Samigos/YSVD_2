@@ -31,12 +31,12 @@ int main(int argc, char **argv) {
     insert_Entries(fd);
     HP_CloseFile(fd);
     
-    HP_SplitFiles(fileName, fieldNo);
+    //HP_SplitFiles(fileName, fieldNo);
     //HP_GetAllEntries(fd, "name", "Sung");
     
     //sort heap file using 2-way merge-sort
     
-   // Sorted_SortFile(fileName, fieldNo);
+    Sorted_SortFile(fileName, fieldNo);
  //   Sorted_checkSortedFile("heapFileSorted", fieldNo);
     
     //get all entries with value

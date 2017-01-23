@@ -117,7 +117,7 @@ int Sorted_CloseFile(int fileDesc) {
 //}
 
 void Sorted_SortFile(char* fileName, int fieldNo) {
-    
+    HP_SplitFiles(fileName, fieldNo);
 }
 
 void Sorted_checkSortedFile(char* fileName, int fieldNo) {

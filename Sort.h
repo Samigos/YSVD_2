@@ -10,6 +10,7 @@
 #define Sort_h
 
 #include "BF.h"
+#include "Heap.h"
 
 #define SORT_FILE_ID 1216250 // Special information for the first block of a heap file
 

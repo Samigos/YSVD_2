@@ -4,6 +4,8 @@
 #include "BF.h"
 #include "Heap.h"
 
+int numberOfFiles = 0;
+
 // ------------------------------------------------
 // Create a new heap file, open it,
 // allocate its first block and write
@@ -214,6 +216,7 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     // -------------------------------------
     
     int blockIndex;
+    numberOfFiles = numberOfBlocks;
     
     for (blockIndex = 1; blockIndex < numberOfBlocks; blockIndex++) {
         void* block;
@@ -280,10 +283,37 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         return -1;
     }
     
+    // -------------------------------------
+    
+    int k;
+    
+    while (numberOfFiles >= 2) {
+        for (k = 0; k < numberOfFiles; k += 2) {
+            char fileName1[15], fileName2[15];
+            strcpy(fileName1, "temp_");
+            
+            char num[7];
+            sprintf(num, "%d", k+1);
+            strcat(fileName1, num);
+            
+            // -------------------------------------
+            
+            strcpy(fileName2, "temp_");
+            sprintf(num, "%d", k+2);
+            strcat(fileName2, num);
+            
+            // -------------------------------------
+            
+            HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo);
+        }
+        
+        numberOfFiles /= 2;
+    }
+    
     return 0;
 }
 
-int HP_MergeFiles(char* firstFileName, char* secondFileName, const int fieldNo) {
+int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFileName, const int fieldNo) {
     int firstNumberOfBlocks, secondNumberOfBlocks, blockIndex;
     int firstFileDesc, secondFileDesc;
     
@@ -310,7 +340,7 @@ int HP_MergeFiles(char* firstFileName, char* secondFileName, const int fieldNo) 
     // -------------------------------------
     
     for (blockIndex = 1; blockIndex < firstNumberOfBlocks; blockIndex++) {
-        void *block1, *block2;
+        void* block1, *block2;
         int currentFileDesc;
         
         if (BF_ReadBlock(firstFileDesc, blockIndex, &block1) < 0) {
@@ -345,14 +375,38 @@ int HP_MergeFiles(char* firstFileName, char* secondFileName, const int fieldNo) 
         
         mergedRecords = mergeSortedRecords(records1, records2, numberOfRecordsInBlockFirstFile, numberOfRecordsInBlockSecondFile, fieldNo);
         
+        if (HP_CloseFile(firstFileDesc) < 0) {
+            BF_PrintError("Error closing initial heap file in HP_MergeFiles");
+            return -1;
+        }
+        
+        if (HP_CloseFile(secondFileDesc) < 0) {
+            BF_PrintError("Error closing initial heap file in HP_MergeFiles");
+            return -1;
+        }
+        
+        HP_DeleteFile(firstFileName);
+        HP_DeleteFile(secondFileName);
+        
         // -------------------------------------
         
-        char tempFileName[15];
-        strcpy(tempFileName, "merged_");
-        
+        char tempFileName[30];
         char num[7];
-        sprintf(num, "%d", blockIndex);
-        strcat(tempFileName, num);
+        
+        if (numberOfFiles == 2) {
+            strcpy(tempFileName, initialHeapFileName);
+            strcat(tempFileName, "Sorted");
+            
+            sprintf(num, "%d", fieldNo);
+            strcat(tempFileName, num);
+        }
+        else {
+            strcpy(tempFileName, "temp_");
+            
+            sprintf(num, "%d", blockIndex);
+            strcat(tempFileName, num);
+        }
+        
         
         // -------------------------------------
         
@@ -376,9 +430,6 @@ int HP_MergeFiles(char* firstFileName, char* secondFileName, const int fieldNo) 
         
         free(mergedRecords);
         
-        HP_DeleteFile(firstFileName);
-        HP_DeleteFile(secondFileName);
-        
         // -------------------------------------
         
         //        if (HP_CloseFile(currentFileDesc) < 0) {
@@ -386,16 +437,6 @@ int HP_MergeFiles(char* firstFileName, char* secondFileName, const int fieldNo) 
         //            return -1;
         //        }
         
-        
-        if (HP_CloseFile(firstFileDesc) < 0) {
-            BF_PrintError("Error closing initial heap file in HP_MergeFiles");
-            return -1;
-        }
-        
-        if (HP_CloseFile(secondFileDesc) < 0) {
-            BF_PrintError("Error closing initial heap file in HP_MergeFiles");
-            return -1;
-        }
     }
     
     return 0;
@@ -465,16 +506,16 @@ Record* mergeSortedRecords(Record* Array1, Record* Array2, const int numOfRecord
             sortedRecordsArray[sortedArrayIndex] = Array2[secondArrayIndex];
             secondArrayIndex++;
             
-            if (secondArrayIndex == numOfRecordsFile2) { /////////////////// ti ginetai edw;; mipws break;
-                firstArrayIndex++;
+            if (secondArrayIndex == numOfRecordsFile2) {
+                break;
             }
         }
         else if (secondArrayIndex == numOfRecordsFile2) {
             sortedRecordsArray[sortedArrayIndex] = Array1[firstArrayIndex];
             firstArrayIndex++;
             
-            if (firstArrayIndex == numOfRecordsFile1) { /////////////////// ti ginetai edw;; mipws break;
-                secondArrayIndex++;
+            if (firstArrayIndex == numOfRecordsFile1) {
+                break;
             }
         }
         else {
