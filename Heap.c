@@ -356,7 +356,7 @@ int HP_MergeFiles(char* firstFileName, char* secondFileName, const int fieldNo) 
         
         // -------------------------------------
         
-        printf("Creating %s heap file...\n", tempFileName);
+        printf("Creating %s merged heap file...\n", tempFileName);
         
         if (HP_CreateFile(tempFileName) < 0) {
             BF_PrintError("Error creating heap file in HP_MergeFiles");
@@ -375,6 +375,9 @@ int HP_MergeFiles(char* firstFileName, char* secondFileName, const int fieldNo) 
         }
         
         free(mergedRecords);
+        
+        HP_DeleteFile(firstFileName);
+        HP_DeleteFile(secondFileName);
         
         // -------------------------------------
         
@@ -454,126 +457,84 @@ Record* bubbleSortedRecords(Record* recordsArray, const int numOfRecords, const 
 }
 
 Record* mergeSortedRecords(Record* Array1, Record* Array2, const int numOfRecordsFile1, const int numOfRecordsFile2, const int fieldNo) {
-    int k = 0;
-    int j = 0;
-    int l = 0;
+    Record* sortedRecordsArray = malloc(sizeof(Record) * (numOfRecordsFile1 + numOfRecordsFile2));
+    int firstArrayIndex = 0, secondArrayIndex = 0, sortedArrayIndex = 0;
     
-    Record* records = malloc(sizeof(Record) * (numOfRecordsFile1 + numOfRecordsFile2));
-    
-    while ((k < numOfRecordsFile1) || (j < numOfRecordsFile2)) {
-        if (k == numOfRecordsFile1) {
-            records[l] = Array2[j];
+    while ((firstArrayIndex < numOfRecordsFile1) || (secondArrayIndex < numOfRecordsFile2)) {
+        if (firstArrayIndex == numOfRecordsFile1) {
+            sortedRecordsArray[sortedArrayIndex] = Array2[secondArrayIndex];
+            secondArrayIndex++;
             
-            j++;
-            l++;
-            
-            if (j == numOfRecordsFile2) {
-                k++;
+            if (secondArrayIndex == numOfRecordsFile2) { /////////////////// ti ginetai edw;; mipws break;
+                firstArrayIndex++;
             }
         }
-        else if (j == numOfRecordsFile2) {
-            records[l] = Array1[k];
+        else if (secondArrayIndex == numOfRecordsFile2) {
+            sortedRecordsArray[sortedArrayIndex] = Array1[firstArrayIndex];
+            firstArrayIndex++;
             
-            k++;
-            l++;
-            
-            if (k == numOfRecordsFile1) {
-                j++;
+            if (firstArrayIndex == numOfRecordsFile1) { /////////////////// ti ginetai edw;; mipws break;
+                secondArrayIndex++;
             }
         }
         else {
             if (fieldNo == 0) {
-                if (Array1[k].id < Array2[j].id) {
-                    records[l] = Array1[k];
-                    
-                    k++;
-                    l++;
+                if (Array1[firstArrayIndex].id < Array2[secondArrayIndex].id) {
+                    sortedRecordsArray[sortedArrayIndex] = Array1[firstArrayIndex];
+                    firstArrayIndex++;
                 }
-                else if (Array1[k].id > Array2[j].id) {
-                    records[l] = Array2[j];
-                    
-                    j++;
-                    l++;
+                else if (Array1[firstArrayIndex].id > Array2[secondArrayIndex].id) {
+                    sortedRecordsArray[sortedArrayIndex] = Array2[secondArrayIndex];
+                    secondArrayIndex++;
                 }
                 else {
-                    records[l] = Array1[k];
-                    records[l+1] = Array2[j];
+                    sortedRecordsArray[sortedArrayIndex] = Array1[firstArrayIndex];
+                    sortedRecordsArray[sortedArrayIndex+1] = Array2[secondArrayIndex];
                     
-                    k++;
-                    j++;
-                    l += 2;
+                    firstArrayIndex++;
+                    secondArrayIndex++;
+                    sortedArrayIndex++;
                 }
             }
-            else if (fieldNo == 1) {
-                if (strcmp(Array1[k].name, Array2[j].name) < 0) {
-                    records[l] = Array1[k];
-                    
-                    k++;
-                    l++;
+            else {
+                char* attr1, *attr2;
+                
+                if (fieldNo == 1) {
+                    attr1 = malloc(strlen(Array1[firstArrayIndex].name) + 1);
+                    attr2 = malloc(strlen(Array2[secondArrayIndex].name) + 1);
                 }
-                else if (strcmp(Array1[k].name, Array2[j].name) > 0) {
-                    records[l] = Array2[j];
-                    
-                    j++;
-                    l++;
+                else if (fieldNo == 2) {
+                    attr1 = malloc(strlen(Array1[firstArrayIndex].surname) + 1);
+                    attr2 = malloc(strlen(Array2[secondArrayIndex].surname) + 1);
                 }
                 else {
-                    records[l] = Array1[k];
-                    records[l+1] = Array2[j];
-                    
-                    k++;
-                    j++;
-                    l += 2;
+                    attr1 = malloc(strlen(Array1[firstArrayIndex].city) + 1);
+                    attr2 = malloc(strlen(Array2[secondArrayIndex].city) + 1);
                 }
-            }
-            else if (fieldNo == 2) {
-                if (strcmp(Array1[k].surname, Array2[j].surname) < 0) {
-                    records[l] = Array1[k];
-                    
-                    k++;
-                    l++;
+                
+                if (strcmp(attr1, attr2) < 0) {
+                    sortedRecordsArray[sortedArrayIndex] = Array1[firstArrayIndex];
+                    firstArrayIndex++;
                 }
-                else if (strcmp(Array1[k].surname, Array2[j].surname) > 0) {
-                    records[l] = Array2[j];
-                    
-                    j++;
-                    l++;
+                else if (strcmp(attr1, attr2) > 0) {
+                    sortedRecordsArray[sortedArrayIndex] = Array2[secondArrayIndex];
+                    secondArrayIndex++;
                 }
                 else {
-                    records[l] = Array1[k];
-                    records[l+1] = Array2[j];
+                    sortedRecordsArray[sortedArrayIndex] = Array1[firstArrayIndex];
+                    sortedRecordsArray[sortedArrayIndex+1] = Array2[secondArrayIndex];
                     
-                    k++;
-                    j++;
-                    l += 2;
-                }
-            }
-            else if (fieldNo == 3) {
-                if (strcmp(Array1[k].city, Array2[j].city) < 0) {
-                    records[l] = Array1[k];
-                    
-                    k++;
-                    l++;
-                }
-                else if (strcmp(Array1[k].city, Array2[j].city) > 0) {
-                    records[l] = Array2[j];
-                    
-                    j++;
-                    l++;
-                }	
-                else {
-                    records[l] = Array1[k];
-                    records[l+1] = Array2[j];
-                    
-                    k++;
-                    j++;
-                    l += 2;
+                    firstArrayIndex++;
+                    secondArrayIndex++;
+                    sortedArrayIndex++;
                 }
             }
         }
+        
+        sortedArrayIndex++;
     }
     
-    return records;
+    return sortedRecordsArray;
 }
 
 // ------------------------------------------------
