@@ -425,7 +425,7 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         
         // -------------------------------------
         
-        printf("Creating %s merged heap file...\n", tempFileName);
+        printf("Creating %s merged heap file... (blockIndex %d)\n", tempFileName, blockIndex);
         
         if (HP_CreateFile(tempFileName) < 0) {
             BF_PrintError("Error creating merged heap file in HP_MergeFiles");
