@@ -511,7 +511,7 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
     
     // -------------------------------------
     
-    for (blockIndex = 0; blockIndex < firstNumberOfBlocks; blockIndex++) {
+    for (blockIndex = 0; blockIndex < (firstNumberOfBlocks + secondFileDesc); blockIndex++) {
         if (BF_ReadBlock(tempFileDesc, blockIndex, &block) < 0) {
             BF_PrintError("Error getting block of first merged temp file in HP_MergeFiles zzz");
             return -1;
