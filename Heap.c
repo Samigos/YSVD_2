@@ -6,7 +6,9 @@
 
 int numberOfFiles = 0;
 int fileCounter = 1;
+
 int sign = FALSE;
+int forMerge = FALSE;
 
 // ------------------------------------------------
 // Create a new heap file, open it,
@@ -246,7 +248,7 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         // -------------------------------------
         
         char tempFileName[15];
-        strcpy(tempFileName, "temp_");
+        strcpy(tempFileName, "merged_");
         
         char num[7];
         sprintf(num, "%d", blockIndex);
@@ -294,18 +296,18 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     
     while (numberOfFiles >= 2) {
         if (numberOfFiles % 2 == 0) {
-            for (k = 1; k < numberOfFiles; k += 2) {
+            for (k = 0; k < numberOfFiles; k += 2) {
                 char fileName1[15], fileName2[15];
                 strcpy(fileName1, "temp_");
                 
                 char num[7];
-                sprintf(num, "%d", k);
+                sprintf(num, "%d", k+1);
                 strcat(fileName1, num);
                 
                 // -------------------------------------
                 
                 strcpy(fileName2, "temp_");
-                sprintf(num, "%d", k+1);
+                sprintf(num, "%d", k+2);
                 strcat(fileName2, num);
                 
                 // -------------------------------------
@@ -316,7 +318,57 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
                 }
             }
             
-            numberOfFiles /= 2;
+            if (k == numberOfFiles) {
+                forMerge = TRUE;
+                numberOfFiles /= 2;
+                
+                if (numberOfFiles % 2 == 0) {
+                    for (k = 0; k < numberOfFiles; k += 2) {
+                        char fileName1[15], fileName2[15];
+                        strcpy(fileName1, "merged_");
+                        
+                        char num[7];
+                        sprintf(num, "%d", k+1);
+                        strcat(fileName1, num);
+                        
+                        // -------------------------------------
+                        
+                        strcpy(fileName2, "merged_");
+                        sprintf(num, "%d", k+2);
+                        strcat(fileName2, num);
+                        
+                        // -------------------------------------
+                        
+                        printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
+                        if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
+                            printf("\nError in HP_MergeFiles (1)\n");
+                        }
+                    }
+                }
+                else {
+                    sign = TRUE;
+                    
+                    char fileName1[15], fileName2[15];
+                    strcpy(fileName1, "merged_");
+                    
+                    char num[7];
+                    sprintf(num, "%d", 1);
+                    strcat(fileName1, num);
+                    
+                    // -------------------------------------
+                    
+                    strcpy(fileName2, "merged_");
+                    sprintf(num, "%d", numberOfFiles--);
+                    strcat(fileName2, num);
+                    
+                    // -------------------------------------
+                    
+                    printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
+                    if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
+                        printf("\nError in HP_MergeFiles (2)\n");
+                    }
+                }
+            }
         }
         else {
             sign = TRUE;
@@ -481,15 +533,22 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             strcat(tempFileName, num);
         }
         else {
-            strcpy(tempFileName, "temp_");
-            
             if (sign == TRUE) {
-                sign = FALSE;
-                
-                sprintf(num, "%d", 2221);
-                strcat(tempFileName, num);
+                if (forMerge == TRUE) {
+                    sign = FALSE;
+                    
+                    strcpy(tempFileName, "merged_");
+                    sprintf(num, "%d", 1);
+                    strcat(tempFileName, num);
+                }
+                else {
+                    strcpy(tempFileName, "temp_");
+                    sprintf(num, "%d", 1);
+                    strcat(tempFileName, num);
+                }
             }
             else {
+                strcpy(tempFileName, "merged_");
                 sprintf(num, "%d", fileCounter++);
                 strcat(tempFileName, num);
             }
