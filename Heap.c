@@ -318,50 +318,24 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             numberOfFiles /= 2;
         }
         else {
-            for (k = 0; k < numberOfFiles-1; k += 2) {
-                char fileName1[15], fileName2[15];
-                strcpy(fileName1, "temp_");
-                
-                char num[7];
-                sprintf(num, "%d", k+1);
-                strcat(fileName1, num);
-                
-                // -------------------------------------
-                
-                strcpy(fileName2, "temp_");
-                sprintf(num, "%d", k+2);
-                strcat(fileName2, num);
-                
-                // -------------------------------------
-                
-                printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
-                if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
-                    printf("\nError in HP_MergeFiles (2)\n");
-                }
-            }
+            char fileName1[15], fileName2[15];
+            strcpy(fileName1, "temp_");
             
-            numberOfFiles = (numberOfFiles / 2) + 1;
+            char num[7];
+            sprintf(num, "%d", 1);
+            strcat(fileName1, num);
             
-            if (numberOfFiles == 2) {
-                char fileName1[15], fileName2[15];
-                strcpy(fileName1, "temp_");
-                
-                char num[7];
-                sprintf(num, "%d", 1);
-                strcat(fileName1, num);
-                
-                // -------------------------------------
-                
-                strcpy(fileName2, "temp_");
-                sprintf(num, "%d", savedNumberOfFiles);
-                strcat(fileName2, num);
-                
-                // -------------------------------------
-                
-                printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
-                if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
-                    printf("\nError in HP_MergeFiles (3)\n");
-                }
+            // -------------------------------------
+            
+            strcpy(fileName2, "temp_");
+            sprintf(num, "%d", numberOfFiles);
+            strcat(fileName2, num);
+            
+            // -------------------------------------
+            
+            printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
+            if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
+                printf("\nError in HP_MergeFiles (2)\n");
             }
         }
     }
