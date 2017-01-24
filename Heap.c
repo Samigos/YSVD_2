@@ -422,17 +422,17 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             sprintf(num, "%d", fileCounter++);
             strcat(tempFileName, num);
             
-            if (numberOfFiles % 2 == 0 && fileCounter == (numberOfFiles / 2) + 1) {
+            if (numberOfFiles % 2 == 0 && fileCounter >= (numberOfFiles / 2) + 1) {
                 fileCounter = 1;
             }
-            else if (numberOfFiles % 2 != 0 && fileCounter == (numberOfFiles / 2) + 2) {
+            else if (numberOfFiles % 2 != 0 && fileCounter >= (numberOfFiles / 2) + 2) {
                 fileCounter = 1;
             }
         }
         
         // -------------------------------------
         
-        printf("Creating %s merged heap file...\n", tempFileName);
+        printf("Creating %s merged heap file... (blockIndex %d)\n", tempFileName, blockIndex);
         
         if (HP_CreateFile(tempFileName) < 0) {
             BF_PrintError("Error creating merged heap file in HP_MergeFiles");
