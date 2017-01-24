@@ -456,9 +456,13 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             return -1;
         }
         
+        printf("Deleting %s...\n\n", firstFileName);
+        
         if (HP_DeleteFile(firstFileName) < 0) {
             printf("Error deleting temp heap file %s in HP_MergeFiles", firstFileName);
         }
+        
+        printf("Deleting %s...\n\n", secondFileName);
         
         if (HP_DeleteFile(secondFileName) < 0) {
             printf("Error deleting temp heap file %s in HP_MergeFiles", secondFileName);
@@ -514,10 +518,7 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         
         // -------------------------------------
         
-        printf("Inserting...\n\n");
-        
         for (recordIndex = 0; recordIndex < (numberOfRecordsInBlockFirstFile + numberOfRecordsInBlockSecondFile); recordIndex++) {
-            printf("%d,\n%s,\n%s,\n%s\n\n", mergedRecords[recordIndex].id, mergedRecords[recordIndex].name, mergedRecords[recordIndex].surname, mergedRecords[recordIndex].city);
             HP_InsertEntry(currentFileDesc, mergedRecords[recordIndex]);
         }
         
