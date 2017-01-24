@@ -16,7 +16,7 @@ int Sorted_CreateFile(char* fileName) {
     // Create a new file and then open it
     
     if (BF_CreateFile(fileName) < 0) {
-        BF_PrintError("Error creating heap file in Sorted_CreateFile");
+        BF_PrintError("Error creating sorted file in Sorted_CreateFile");
         return -1;
     }
     
@@ -26,7 +26,7 @@ int Sorted_CreateFile(char* fileName) {
     int fileDesc;
     
     if ((fileDesc = BF_OpenFile(fileName)) < 0) {
-        BF_PrintError("Error opening heap file in Sorted_CreateFile");
+        BF_PrintError("Error opening sorted file in Sorted_CreateFile");
         return -1;
     }
     
@@ -53,7 +53,7 @@ int Sorted_CreateFile(char* fileName) {
     // -----------------------------------------------
     // Store the special info to the first block
     
-    const int FILE_ID = 909;
+    const int FILE_ID = SORT_FILE_ID;
     memcpy(block, &FILE_ID, sizeof(int));
     
     if (BF_WriteBlock(fileDesc, 0) < 0) {
@@ -73,7 +73,7 @@ int Sorted_OpenFile(char* fileName) {
     int fileDesc;
     
     if ((fileDesc = BF_OpenFile(fileName)) < 0) {
-        BF_PrintError("Error opening heap file in Sorted_OpenFile");
+        BF_PrintError("Error opening sorted file in Sorted_OpenFile");
         return -1;
     }
     
@@ -96,7 +96,7 @@ int Sorted_OpenFile(char* fileName) {
     int FILE_ID;
     memcpy(&FILE_ID, block, sizeof(int));
     
-    if (FILE_ID == 909) {
+    if (FILE_ID == SORT_FILE_ID) {
         return fileDesc;
     }
     
@@ -105,23 +105,23 @@ int Sorted_OpenFile(char* fileName) {
 
 int Sorted_CloseFile(int fileDesc) {
     if (BF_CloseFile(fileDesc) < 0) {
-        BF_PrintError("Error closing heap file in Sorted_CloseFile");
+        BF_PrintError("Error closing sorted file in Sorted_CloseFile");
         return -1;
     }
     
     return 0;
 }
 
-//int Sorted_InsertEntry(int fileDesc, Record record) {
-//    return 0;
-//}
-
-void Sorted_SortFile(char* fileName, int fieldNo) {
-    HP_SplitFiles(fileName, fieldNo);
+int Sorted_InsertEntry(int fileDesc, Record record) {
+    return HP_InsertEntry(fileDesc, record);
 }
 
-void Sorted_checkSortedFile(char* fileName, int fieldNo) {
-    
+int Sorted_SortFile(char* fileName, int fieldNo) {
+    return HP_SplitFiles(fileName, fieldNo);
+}
+
+int Sorted_checkSortedFile(char* fileName, int fieldNo) {
+    return 0;
 }
 
 void Sorted_GetAllEntries(int fileDesc, int* fieldNo, void* value) {

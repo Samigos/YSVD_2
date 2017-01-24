@@ -12,31 +12,30 @@ void insert_Entries(int);
 
 int main(int argc, char **argv) {
     int fd;
-    int fieldNo = 1;
+    int fieldNo;
    
     BF_Init();
     
     //create heap file
-//    if (Sorted_CreateFile(fileName) == -1)
-//        printf("Error creating file!\n");
+    if (Sorted_CreateFile(fileName) == -1)
+        printf("Error creating file in main!\n");
     
-  //  fd = Sorted_OpenFile(fileName);
+    fd = Sorted_OpenFile(fileName);
     
-   // if (fd == -1)
-     //   printf("Error opening file!\n");
-    
-    HP_CreateFile(fileName);
-    fd = HP_OpenFile(fileName);
+    if (fd == -1)
+        printf("Error opening file in main!\n");
     
     insert_Entries(fd);
-    HP_CloseFile(fd);
     
-    //HP_SplitFiles(fileName, fieldNo);
+    
     //HP_GetAllEntries(fd, "name", "Sung");
     
-    //sort heap file using 2-way merge-sort
+    if (Sorted_CloseFile(fd) < 0) {
+        printf("Error closing file in main!\n");
+    }
     
-    Sorted_SortFile(fileName, fieldNo);
+    //sort heap file using 2-way merge-sort
+    Sorted_SortFile(fileName, 0);
  //   Sorted_checkSortedFile("heapFileSorted", fieldNo);
     
     //get all entries with value
@@ -85,7 +84,7 @@ void insert_Entries(int fd) {
         pch[strlen(pch) - 1] = 0;
         strncpy(record.city, pch, sizeof(record.city));
         
-        assert(!HP_InsertEntry(fd, record));
+        assert(!Sorted_InsertEntry(fd, record));
     }
     
     free(line);

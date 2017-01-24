@@ -72,7 +72,7 @@ int HP_OpenFile(char* fileName) {
     int fileDesc, blockNumber;
     
     if ((fileDesc = BF_OpenFile(fileName)) < 0) {
-        BF_PrintError("Error opening file in HP_OpenFile");
+        BF_PrintError("Error opening heap file in HP_OpenFile");
         return -1;
     }
     
@@ -104,7 +104,7 @@ int HP_CloseFile(int fileDesc) {
         return 0;
     }
     
-    BF_PrintError("Error closing file in main");
+    BF_PrintError("Error closing file in HP_CloseFile");
 
     return -1;
 }
@@ -227,12 +227,14 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             return -1;
         }
         
+        // -------------------------------------
+        
         int numberOfRecordsInBlock;
         memcpy(&numberOfRecordsInBlock, block, sizeof(int));
         
-        int recordIndex;
         Record* records = malloc(sizeof(Record) * numberOfRecordsInBlock);
-        
+        int recordIndex;
+
         for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock; recordIndex++) {
             memcpy(&records[recordIndex-1], block + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
         }
@@ -253,12 +255,12 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         printf("Creating %s heap file...\n", tempFileName);
         
         if (HP_CreateFile(tempFileName) < 0) {
-            BF_PrintError("Error creating heap file in HP_SplitFiles");
+            BF_PrintError("Error creating temp file in HP_SplitFiles");
             return -1;
         }
         
         if ((currentFileDesc = HP_OpenFile(tempFileName) < 0)) {
-            BF_PrintError("Error opening temp heap file in HP_SplitFiles");
+            BF_PrintError("Error opening temp file in HP_SplitFiles");
             return -1;
         }
         
@@ -273,12 +275,13 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         // -------------------------------------
         
         if (HP_CloseFile(currentFileDesc) < 0) {
-            BF_PrintError("Error closing heap file in HP_SplitFiles");
+            BF_PrintError("Error closing temp file in HP_SplitFiles");
             return -1;
         }
     }
     
     // -------------------------------------
+    // Now we need to sort and merge the files
     
     int k;
     
@@ -302,7 +305,12 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo);
         }
         
-        numberOfFiles /= 2;
+        if (numberOfFiles % 2 == 0) {
+            numberOfFiles /= 2;
+        }
+        else {
+            numberOfFiles = (numberOfFiles / 2) + 1;
+        }
     }
     
     if (HP_CloseFile(initialHeapFileDesc) < 0) {
@@ -385,8 +393,13 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             return -1;
         }
         
-        HP_DeleteFile(firstFileName);
-        HP_DeleteFile(secondFileName);
+        if (HP_DeleteFile(firstFileName) < 0) {
+            printf("Error deleting temp heap file %s in HP_MergeFiles", firstFileName);
+        }
+        
+        if (HP_DeleteFile(secondFileName) < 0) {
+            printf("Error deleting temp heap file %s in HP_MergeFiles", secondFileName);
+        }
         
         // -------------------------------------
         
@@ -413,7 +426,7 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         printf("Creating %s merged heap file...\n", tempFileName);
         
         if (HP_CreateFile(tempFileName) < 0) {
-            BF_PrintError("Error creating heap file in HP_MergeFiles");
+            BF_PrintError("Error creating merged heap file in HP_MergeFiles");
             return -1;
         }
         
@@ -432,11 +445,10 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         
         // -------------------------------------
         
-        //        if (HP_CloseFile(currentFileDesc) < 0) {
-        //            BF_PrintError("Error closing heap file in HP_SplitFiles");
-        //            return -1;
-        //        }
-        
+        if (HP_CloseFile(currentFileDesc) < 0) {
+            BF_PrintError("Error closing merged heap file in HP_SplitFiles");
+            return -1;
+        }
     }
     
     return 0;

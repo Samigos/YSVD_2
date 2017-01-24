@@ -17,9 +17,9 @@
 int Sorted_CreateFile(char*);
 int Sorted_OpenFile(char*);
 int Sorted_CloseFile(int);
-//int Sorted_InsertEntry(int, Record);
-void Sorted_SortFile(char*, int);
-void Sorted_checkSortedFile(char*, int);
+int Sorted_InsertEntry(int, Record);
+int Sorted_SortFile(char*, int);
+int Sorted_checkSortedFile(char*, int);
 void Sorted_GetAllEntries(int, int*, void*);
 
 #endif /* Sort_h */
