@@ -218,9 +218,9 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     // -------------------------------------
     
     int blockIndex;
-    numberOfFiles = numberOfBlocks;
-    printf("\n init numberOfFiles %d\n", numberOfFiles);
-    for (blockIndex = 1; blockIndex <= numberOfBlocks; blockIndex++) {
+    numberOfFiles = numberOfBlocks-1;
+
+    for (blockIndex = 1; blockIndex < numberOfBlocks; blockIndex++) {
         void* block;
         int currentFileDesc;
         
@@ -313,9 +313,6 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
                 printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
                 if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
                     printf("\nError in HP_MergeFiles (1)\n");
-                    printf("\n numberOfFiles %d \n", numberOfFiles);
-                    numberOfFiles=0;
-                    break;
                 }
             }
             
