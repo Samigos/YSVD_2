@@ -514,7 +514,10 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         
         // -------------------------------------
         
+        printf("Inserting...\n\n");
+        
         for (recordIndex = 0; recordIndex < (numberOfRecordsInBlockFirstFile + numberOfRecordsInBlockSecondFile); recordIndex++) {
+            printf("%d,\n%s,\n%s,\n%s\n\n", mergedRecords[recordIndex].id, mergedRecords[recordIndex].name, mergedRecords[recordIndex].surname, mergedRecords[recordIndex].city);
             HP_InsertEntry(currentFileDesc, mergedRecords[recordIndex]);
         }
         
