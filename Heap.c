@@ -325,12 +325,12 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
     int firstNumberOfBlocks, secondNumberOfBlocks, blockIndex;
     int firstFileDesc, secondFileDesc;
     
-    if ((firstFileDesc = HP_OpenFile(firstFileName) < 0)) {
+    if ((firstFileDesc = HP_OpenFile(firstFileName)) < 0) {
         BF_PrintError("Error getting block in HP_MergeFiles");
         return -1;
     }
     
-    if ((secondFileDesc = HP_OpenFile(secondFileName) < 0)) {
+    if ((secondFileDesc = HP_OpenFile(secondFileName)) < 0) {
         BF_PrintError("Error getting block in HP_MergeFiles");
         return -1;
     }
@@ -430,7 +430,7 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             return -1;
         }
         
-        if ((currentFileDesc = HP_OpenFile(tempFileName) < 0)) {
+        if ((currentFileDesc = HP_OpenFile(tempFileName)) < 0) {
             BF_PrintError("Error getting block in HP_MergeFiles");
             return -1;
         }
