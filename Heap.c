@@ -493,12 +493,11 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
     
     printf("Creating new %s file\n", tempFileName);
     
+    HP_GetAllEntries(tempFileDesc, 1, NULL);
     rename("temp", tempFileName);
     
-    tempFileDesc = HP_OpenFile(tempFileName);
-    printf("blou %d\n", tempFileDesc);
+    //tempFileDesc = HP_OpenFile(tempFileName);
     
-    HP_GetAllEntries(tempFileDesc, 1, NULL);
     
     // -------------------------------------
     
