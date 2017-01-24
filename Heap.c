@@ -294,18 +294,18 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     
     while (numberOfFiles >= 2) {
         if (numberOfFiles % 2 == 0) {
-            for (k = 0; k < numberOfFiles; k += 2) {
+            for (k = 1; k < numberOfFiles; k += 2) {
                 char fileName1[15], fileName2[15];
                 strcpy(fileName1, "temp_");
                 
                 char num[7];
-                sprintf(num, "%d", k+1);
+                sprintf(num, "%d", k);
                 strcat(fileName1, num);
                 
                 // -------------------------------------
                 
                 strcpy(fileName2, "temp_");
-                sprintf(num, "%d", k+2);
+                sprintf(num, "%d", k+1);
                 strcat(fileName2, num);
                 
                 // -------------------------------------
