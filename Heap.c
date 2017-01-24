@@ -491,13 +491,94 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         }
     }
     
+    // -------------------------------------
+    
     printf("Creating new %s file\n", tempFileName);
+
+    void* block;
+    int newFileDesc;
     
-    HP_GetAllEntries(tempFileDesc, 1, NULL);
-    rename("temp", tempFileName);
+    if (HP_CreateFile(tempFileName) < 0) {
+        BF_PrintError("Error creating merged heap file in HP_MergeFiles");
+        return -1;
+    }
     
-    //tempFileDesc = HP_OpenFile(tempFileName);
+    if ((newFileDesc = HP_OpenFile(tempFileName)) < 0) {
+        BF_PrintError("Error opening temp file in HP_MergeFiles");
+        return -1;
+    }
     
+    // -------------------------------------
+    
+    for (blockIndex = 0; blockIndex < firstNumberOfBlocks; blockIndex++) {
+        if (BF_ReadBlock(tempFileDesc, blockIndex, &block) < 0) {
+            BF_PrintError("Error getting block of first merged temp file in HP_MergeFiles zzz");
+            return -1;
+        }
+        
+        if (blockIndex == 0) {
+            int fileId;
+            memcpy(&fileId, block, sizeof(int));
+            
+            // ------------------------------------------------
+            
+            if (BF_AllocateBlock(newFileDesc) < 0) {
+                BF_PrintError("Error allocating block in HP_CreateFile");
+                BF_CloseFile(newFileDesc);
+                
+                return -1;
+            }
+            
+            if (BF_ReadBlock(newFileDesc, 0, &block) < 0) {
+                BF_PrintError("Error getting block in HP_CreateFile");
+                BF_CloseFile(newFileDesc);
+                
+                return -1;
+            }
+            
+            memcpy(block, &fileId, sizeof(int));
+            
+            // ------------------------------------------------
+            
+            if (BF_WriteBlock(newFileDesc, 0) < 0) {
+                BF_PrintError("Error writing to block in HP_CreateFile");
+                BF_CloseFile(newFileDesc);
+                
+                return -1;
+            }
+        }
+        else {
+            int numberOfRecords = 0;
+            memcpy(&numberOfRecords, block, sizeof(int));
+
+            int recordIndex;
+
+            for (recordIndex = 1; recordIndex <= numberOfRecords; recordIndex++) {
+                Record rec;
+                memcpy(&rec, block + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
+
+                HP_InsertEntry(newFileDesc, rec);
+            }
+        }
+    }
+    
+    HP_GetAllEntries(newFileDesc, 1, NULL);
+    
+    if (HP_CloseFile(newFileDesc) < 0) {
+        BF_PrintError("Error closing initial heap file in HP_MergeFiles");
+        return -1;
+    }
+    
+    // -------------------------------------
+    
+    if (HP_CloseFile(tempFileDesc) < 0) {
+        BF_PrintError("Error closing initial heap file in HP_MergeFiles");
+        return -1;
+    }
+    
+    if (HP_DeleteFile(tempFileName) < 0) {
+        printf("Error deleting temp heap file %s in HP_MergeFiles", tempFileName);
+    }
     
     // -------------------------------------
     
