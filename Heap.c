@@ -280,6 +280,11 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         }
     }
     
+    if (HP_CloseFile(initialHeapFileDesc) < 0) {
+        BF_PrintError("Error closing initial heap file in HP_SplitFiles");
+        return -1;
+    }
+    
     // -------------------------------------
     // Now we need to sort and merge the files
     
@@ -311,11 +316,6 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
         else {
             numberOfFiles = (numberOfFiles / 2) + 1;
         }
-    }
-    
-    if (HP_CloseFile(initialHeapFileDesc) < 0) {
-        BF_PrintError("Error closing initial heap file in HP_SplitFiles");
-        return -1;
     }
     
     return 0;
