@@ -331,7 +331,7 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             // -------------------------------------
             
             strcpy(fileName2, "temp_");
-            sprintf(num, "%d", numberOfFiles--);
+            sprintf(num, "%d", numberOfFiles);
             strcat(fileName2, num);
             
             // -------------------------------------
@@ -340,6 +340,8 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
                 printf("\nError in HP_MergeFiles (2)\n");
             }
+            
+            --numberOfFiles;
         }
     }
     
@@ -415,7 +417,6 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         
         Record* records1 = malloc(sizeof(Record) * numberOfRecordsInBlockFirstFile);
         Record* records2 = malloc(sizeof(Record) * numberOfRecordsInBlockSecondFile);
-        
         Record* mergedRecords = malloc(sizeof(Record) * (numberOfRecordsInBlockFirstFile + numberOfRecordsInBlockSecondFile));
         
         for (recordIndex = 1; recordIndex <= numberOfRecordsInBlockFirstFile; recordIndex++) {
@@ -436,6 +437,8 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         
         free(mergedRecords);
     }
+    
+    // -------------------------------------
     
     if (HP_CloseFile(firstFileDesc) < 0) {
         BF_PrintError("Error closing initial heap file in HP_MergeFiles");
