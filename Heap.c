@@ -349,6 +349,7 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
 int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFileName, const int fieldNo) {
     int firstNumberOfBlocks, secondNumberOfBlocks, blockIndex;
     int firstFileDesc, secondFileDesc;
+    int recordIndex;
     
     if ((firstFileDesc = HP_OpenFile(firstFileName)) < 0) {
         BF_PrintError("Error opening first merged temp file in HP_MergeFiles");
@@ -372,9 +373,24 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
     
     // -------------------------------------
     
+    int tempFileDesc;
+    
+    printf("Creating helping temp heap file...\n");
+    
+    if (HP_CreateFile("temp") < 0) {
+        BF_PrintError("Error creating merged heap file in HP_MergeFiles");
+        return -1;
+    }
+    
+    if ((tempFileDesc = HP_OpenFile("temp")) < 0) {
+        BF_PrintError("Error opening temp file in HP_MergeFiles");
+        return -1;
+    }
+    
+    // -------------------------------------
+    
     for (blockIndex = 1; blockIndex < firstNumberOfBlocks; blockIndex++) {
         void* block1, *block2;
-        int currentFileDesc;
         
         printf("%s, %s - firstNumberOfBlocks %d, secondNumberOfBlocks %d\n", firstFileName, secondFileName, firstNumberOfBlocks, secondNumberOfBlocks);
         
@@ -395,8 +411,6 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         
         // -------------------------------------
         
-        int recordIndex;
-        
         Record* records1 = malloc(sizeof(Record) * numberOfRecordsInBlockFirstFile);
         Record* records2 = malloc(sizeof(Record) * numberOfRecordsInBlockSecondFile);
         
@@ -414,91 +428,72 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         
         // -------------------------------------
         
-        if (HP_CloseFile(firstFileDesc) < 0) {
-            BF_PrintError("Error closing initial heap file in HP_MergeFiles");
-            return -1;
-        }
-        
-        if (HP_CloseFile(secondFileDesc) < 0) {
-            BF_PrintError("Error closing initial heap file in HP_MergeFiles");
-            return -1;
-        }
-        
-        printf("Deleting %s...\n\n", firstFileName);
-        
-        if (HP_DeleteFile(firstFileName) < 0) {
-            printf("Error deleting temp heap file %s in HP_MergeFiles", firstFileName);
-        }
-        
-        printf("Deleting %s...\n\n", secondFileName);
-        
-        if (HP_DeleteFile(secondFileName) < 0) {
-            printf("Error deleting temp heap file %s in HP_MergeFiles", secondFileName);
-        }
-        
-        // -------------------------------------
-        
-        char tempFileName[30];
-        char num[7];
-        
-        if (numberOfFiles == 2) {
-            strcpy(tempFileName, initialHeapFileName);
-            strcat(tempFileName, "Sorted");
-            
-            sprintf(num, "%d", fieldNo);
-            strcat(tempFileName, num);
-        }
-        else {
-            strcpy(tempFileName, "temp_");
-            
-            if (sign == TRUE) {
-                sign = FALSE;
-                
-                sprintf(num, "%d", 1);
-                strcat(tempFileName, num);
-            }
-            else {
-                sprintf(num, "%d", fileCounter++);
-                strcat(tempFileName, num);
-            }
-            
-            if (numberOfFiles % 2 == 0 && fileCounter >= (numberOfFiles / 2) + 1) {
-                fileCounter = 1;
-            }
-            else if (numberOfFiles % 2 != 0 && fileCounter >= (numberOfFiles / 2) + 2) {
-                fileCounter = 1;
-            }
-        }
-        
-        // -------------------------------------
-        
-        printf("Creating %s merged heap file...\n", tempFileName);
-        
-        if (HP_CreateFile(tempFileName) < 0) {
-            BF_PrintError("Error creating merged heap file in HP_MergeFiles");
-            return -1;
-        }
-        
-        if ((currentFileDesc = HP_OpenFile(tempFileName)) < 0) {
-            BF_PrintError("Error getting block in HP_MergeFiles");
-            return -1;
-        }
-        
-        // -------------------------------------
-        
         for (recordIndex = 0; recordIndex < (numberOfRecordsInBlockFirstFile + numberOfRecordsInBlockSecondFile); recordIndex++) {
-            HP_InsertEntry(currentFileDesc, mergedRecords[recordIndex]);
+            HP_InsertEntry(tempFileDesc, mergedRecords[recordIndex]);
         }
         
         free(mergedRecords);
+    }
+    
+    if (HP_CloseFile(firstFileDesc) < 0) {
+        BF_PrintError("Error closing initial heap file in HP_MergeFiles");
+        return -1;
+    }
+    
+    if (HP_CloseFile(secondFileDesc) < 0) {
+        BF_PrintError("Error closing initial heap file in HP_MergeFiles");
+        return -1;
+    }
+    
+    printf("Deleting %s...\n\n", firstFileName);
+    
+    if (HP_DeleteFile(firstFileName) < 0) {
+        printf("Error deleting temp heap file %s in HP_MergeFiles", firstFileName);
+    }
+    
+    printf("Deleting %s...\n\n", secondFileName);
+    
+    if (HP_DeleteFile(secondFileName) < 0) {
+        printf("Error deleting temp heap file %s in HP_MergeFiles", secondFileName);
+    }
+    
+    // -------------------------------------
+    
+    char tempFileName[30];
+    char num[7];
+    
+    if (numberOfFiles == 2) {
+        strcpy(tempFileName, initialHeapFileName);
+        strcat(tempFileName, "Sorted");
         
-        // -------------------------------------
+        sprintf(num, "%d", fieldNo);
+        strcat(tempFileName, num);
+    }
+    else {
+        strcpy(tempFileName, "temp_");
         
-        if (HP_CloseFile(currentFileDesc) < 0) {
-            BF_PrintError("Error closing merged heap file in HP_SplitFiles");
-            return -1;
+        if (sign == TRUE) {
+            sign = FALSE;
+            
+            sprintf(num, "%d", 1);
+            strcat(tempFileName, num);
+        }
+        else {
+            sprintf(num, "%d", fileCounter++);
+            strcat(tempFileName, num);
+        }
+        
+        if (numberOfFiles % 2 == 0 && fileCounter >= (numberOfFiles / 2) + 1) {
+            fileCounter = 1;
+        }
+        else if (numberOfFiles % 2 != 0 && fileCounter >= (numberOfFiles / 2) + 2) {
+            fileCounter = 1;
         }
     }
+    
+    rename("temp", tempFileName);
+    
+    // -------------------------------------
     
     return 0;
 }
