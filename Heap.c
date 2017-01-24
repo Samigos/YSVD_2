@@ -219,7 +219,7 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     
     int blockIndex;
     numberOfFiles = numberOfBlocks;
-    
+    printf("\n init numberOfFiles %d\n", numberOfFiles);
     for (blockIndex = 1; blockIndex < numberOfBlocks; blockIndex++) {
         void* block;
         int currentFileDesc;
