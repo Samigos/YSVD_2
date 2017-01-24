@@ -15,7 +15,7 @@ int numberOfFiles = 0;
 
 int HP_CreateFile(char* fileName) {
     void *block;
-    int fileDesc, blockNumber = HEAP_FILE_ID;
+    int fileDesc, blockNumber = SORT_FILE_ID;
 
     if (BF_CreateFile(fileName) < 0) {
         BF_PrintError("Error creating file in HP_CreateFile");
@@ -87,7 +87,7 @@ int HP_OpenFile(char* fileName) {
     
     memcpy(&blockNumber, block, sizeof(int));
     
-    if (blockNumber != HEAP_FILE_ID) {
+    if (blockNumber != SORT_FILE_ID) {
         printf("\n\nError: The file you opened, isn't a heap file!\n\n");
         BF_CloseFile(fileDesc);
         

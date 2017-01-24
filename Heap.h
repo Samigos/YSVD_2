@@ -1,7 +1,7 @@
 #ifndef Heap_h
 #define Heap_h
 
-#define HEAP_FILE_ID 216250 // Special information for the first block of a heap file
+#define SORT_FILE_ID 1216250 // Special information for the first block of a heap file
 
 #define TRUE 1
 #define FALSE 0
