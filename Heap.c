@@ -486,7 +486,7 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             if (sign == TRUE) {
                 sign = FALSE;
                 
-                sprintf(num, "%d", 1);
+                sprintf(num, "%d", 2221);
                 strcat(tempFileName, num);
             }
             else {
