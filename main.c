@@ -82,7 +82,7 @@ void insert_Entries(int fd) {
         pch++;
         pch[strlen(pch) - 1] = 0;
         strncpy(record.city, pch, sizeof(record.city));
-        printf("%d,\n%s,\n%s,\n%s\n\n", record.id, record.name, record.surname, record.city);
+
         assert(!Sorted_InsertEntry(fd, record));
     }
     
