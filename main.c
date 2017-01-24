@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     //sort heap file using 2-way merge-sort
     Sorted_SortFile(fileName, 0);
     
-    if (Sorted_checkSortedFile("heapFileSorted", fieldNo) < 0) {
+    if (Sorted_checkSortedFile("heapFileSorted0", fieldNo) < 0) {
         printf("Not sorted!\n");
     }
     else {
