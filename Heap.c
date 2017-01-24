@@ -379,20 +379,8 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         printf("%s, %s - firstNumberOfBlocks %d, secondNumberOfBlocks %d\n", firstFileName, secondFileName, firstNumberOfBlocks, secondNumberOfBlocks);
         
         if (BF_ReadBlock(firstFileDesc, blockIndex, &block1) < 0) {
-            if ((firstFileDesc = HP_OpenFile(firstFileName)) < 0) {
-                BF_PrintError("Error opening first merged temp file in HP_MergeFiles");
-                return -1;
-            }
-            
-            if ((firstNumberOfBlocks = BF_GetBlockCounter(firstFileDesc)) < 0) {
-                BF_PrintError("Error getting block counter of first merged temp file in HP_MergeFiles");
-                return -1;
-            }
-            
-            if (BF_ReadBlock(firstFileDesc, blockIndex, &block1) < 0) {
-                BF_PrintError("Error getting block of first merged temp file in HP_MergeFiles");
-                return -1;
-            }
+            BF_PrintError("Error getting block of first merged temp file in HP_MergeFiles");
+            return -1;
         }
         
         if (BF_ReadBlock(secondFileDesc, blockIndex, &block2) < 0) {
