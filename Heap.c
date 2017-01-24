@@ -6,6 +6,7 @@
 
 int numberOfFiles = 0;
 int fileCounter = 1;
+int sign = FALSE;
 
 // ------------------------------------------------
 // Create a new heap file, open it,
@@ -318,6 +319,8 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             numberOfFiles /= 2;
         }
         else {
+            sign = TRUE;
+            
             char fileName1[15], fileName2[15];
             strcpy(fileName1, "temp_");
             
@@ -438,8 +441,14 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         else {
             strcpy(tempFileName, "temp_");
             
-            sprintf(num, "%d", fileCounter++);
-            strcat(tempFileName, num);
+            if (sign == TRUE) {
+                sprintf(num, "%d", 1);
+                strcat(tempFileName, num);
+            }
+            else {
+                sprintf(num, "%d", fileCounter++);
+                strcat(tempFileName, num);
+            }
             
             if (numberOfFiles % 2 == 0 && fileCounter >= (numberOfFiles / 2) + 1) {
                 fileCounter = 1;
