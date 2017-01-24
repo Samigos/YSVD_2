@@ -167,7 +167,7 @@ int HP_InsertEntry(int fileDesc, Record record) {
     
     // -------------------------------------
     
-    if (++numberOfRecordsInBlock > (int)((BLOCK_SIZE) / sizeof(Record))) {
+    if (++numberOfRecordsInBlock > (int)((BLOCK_SIZE - sizeof(int)) / sizeof(Record))) {
         numberOfRecordsInBlock = 1;
         
         if (BF_AllocateBlock(fileDesc) < 0) {
@@ -768,6 +768,8 @@ void HP_GetAllEntries(int fileDesc, int fieldNo, void* value) {
             for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock; recordIndex++) {
                 memcpy(&rec, block + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
                 
+                if (value == NULL)
+                    printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
                 if (rec.id == (int)value) {
                     printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
                     printf("%d blocks were read\n\n------------------------\n", blockIndex);

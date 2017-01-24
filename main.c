@@ -26,7 +26,6 @@ int main(int argc, char **argv) {
         printf("Error opening file in main!\n");
     
     insert_Entries(fd);
-    Sorted_GetAllEntries(fd, &fieldNo, NULL);
 
     if (Sorted_CloseFile(fd) < 0) {
         printf("Error closing file in main!\n");
@@ -34,7 +33,13 @@ int main(int argc, char **argv) {
     
     //sort heap file using 2-way merge-sort
     Sorted_SortFile(fileName, 0);
- //   Sorted_checkSortedFile("heapFileSorted", fieldNo);
+    
+    if (Sorted_checkSortedFile("heapFileSorted", fieldNo) < 0) {
+        printf("Not sorted!\n");
+    }
+    else {
+        printf("sorted!\n");
+    }
     
     //get all entries with value
     //char value[20];
