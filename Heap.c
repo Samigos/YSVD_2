@@ -582,8 +582,8 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         return -1;
     }
     
-    if (HP_DeleteFile(tempFileName) < 0) {
-        printf("Error deleting temp heap file %s in HP_MergeFiles", tempFileName);
+    if (HP_DeleteFile("temp") < 0) {
+        printf("Error deleting temp heap file in HP_MergeFiles");
     }
     
     // -------------------------------------
