@@ -167,7 +167,7 @@ int HP_InsertEntry(int fileDesc, Record record) {
     
     // -------------------------------------
     
-    if (++numberOfRecordsInBlock > (int)((BLOCK_SIZE - sizeof(int)) / sizeof(Record))) {
+    if (++numberOfRecordsInBlock > (int)((BLOCK_SIZE) / sizeof(Record))) {
         numberOfRecordsInBlock = 1;
         
         if (BF_AllocateBlock(fileDesc) < 0) {
