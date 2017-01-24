@@ -533,8 +533,8 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             strcat(tempFileName, num);
         }
         else {
-            if (sign == TRUE) {
-                if (forMerge == TRUE) {
+            if (forMerge == TRUE) {
+                if (sign == TRUE) {
                     sign = FALSE;
                     
                     strcpy(tempFileName, "merged_");
@@ -546,11 +546,6 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
                     sprintf(num, "%d", 1);
                     strcat(tempFileName, num);
                 }
-            }
-            else {
-                strcpy(tempFileName, "merged_");
-                sprintf(num, "%d", fileCounter++);
-                strcat(tempFileName, num);
             }
             
             if (numberOfFiles % 2 == 0 && fileCounter >= (numberOfFiles / 2) + 1) {
