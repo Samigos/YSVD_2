@@ -353,6 +353,7 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
     
     if ((firstFileDesc = HP_OpenFile(firstFileName)) < 0) {
         BF_PrintError("Error opening first merged temp file in HP_MergeFiles");
+        printf("%s\n", firstFileName);
         return -1;
     }
     
