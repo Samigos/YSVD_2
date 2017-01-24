@@ -199,20 +199,22 @@ int HP_InsertEntry(int fileDesc, Record record) {
     
 	return 0;
 }
+
 /*Sthn arxh anoigoume to arxiko arxeio kai pairnoume ton arithmo twn block tou. Sth sunexeia mesa se mia epanalipsh
-diavazoume ena ena ta blocks kai pairnoume tis eggrafes apo mesa, tis opoies vazoume se ena pinaka. Afotou tis taksinomisoume
-me bubblesort dhmiourgoume ena kainourgio arxeio me ena block kai to gemizoume me tis eggrafes. Afou gine auto gia kathe block
-tou arxikou arxeiou, kanoume merge ta arxeia */
+ diavazoume ena ena ta blocks kai pairnoume tis eggrafes apo mesa, tis opoies vazoume se ena pinaka. Afotou tis taksinomisoume
+ me bubblesort dhmiourgoume ena kainourgio arxeio me ena block kai to gemizoume me tis eggrafes. Afou gine auto gia kathe block
+ tou arxikou arxeiou, kanoume merge ta arxeia */
+
 int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     int numberOfBlocks, initialHeapFileDesc;
     
-    if ((initialHeapFileDesc = HP_OpenFile(initialHeapFileName) < 0)) {      
+    if ((initialHeapFileDesc = HP_OpenFile(initialHeapFileName) < 0)) {
         BF_PrintError("Error opening initial heap file in HP_SplitFiles");
         return -1;
     }
     
-    if ((numberOfBlocks = BF_GetBlockCounter(initialHeapFileDesc)) < 0) {   
-        BF_PrintError("Error getting block counter in HP_SplitFiles"); 
+    if ((numberOfBlocks = BF_GetBlockCounter(initialHeapFileDesc)) < 0) {
+        BF_PrintError("Error getting block counter in HP_SplitFiles");
         return -1;
     }
     
@@ -348,9 +350,11 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     
     return 0;
 }
+
 /* Anoigoume ta 2 taksinomimena arxeia, afou ta diavasoume sugkentrwnoume tis eggrafes tous se enan pinaka ton opoion
-kai meta taksinomoume me thn mergesort sth sunexeia dhmiourgoume ena neo arxeio to opoio tha parei tis eggrafes twn prohgoumenwn
+ kai meta taksinomoume me thn mergesort sth sunexeia dhmiourgoume ena neo arxeio to opoio tha parei tis eggrafes twn prohgoumenwn
  */
+
 int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFileName, const int fieldNo) {
     int firstNumberOfBlocks, secondNumberOfBlocks, blockIndex;
     int firstFileDesc, secondFileDesc;
@@ -574,8 +578,6 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             }
         }
     }
-    
-    HP_GetAllEntries(newFileDesc, 1, NULL);
     
     if (HP_CloseFile(newFileDesc) < 0) {
         BF_PrintError("Error closing initial heap file in HP_MergeFiles");
