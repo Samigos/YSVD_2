@@ -290,7 +290,7 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     // -------------------------------------
     // Now we need to sort and merge the files
     
-    int k, savedNumberOfFiles = numberOfFiles;
+    int k;
     
     while (numberOfFiles >= 2) {
         if (numberOfFiles % 2 == 0) {
@@ -331,7 +331,7 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             // -------------------------------------
             
             strcpy(fileName2, "temp_");
-            sprintf(num, "%d", numberOfFiles);
+            sprintf(num, "%d", numberOfFiles--);
             strcat(fileName2, num);
             
             // -------------------------------------
