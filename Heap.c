@@ -5,6 +5,7 @@
 #include "Heap.h"
 
 int numberOfFiles = 0;
+int fileCounter = 1;
 
 // ------------------------------------------------
 // Create a new heap file, open it,
@@ -418,10 +419,16 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         else {
             strcpy(tempFileName, "temp_");
             
-            sprintf(num, "%d", blockIndex);
+            sprintf(num, "%d", fileCounter++);
             strcat(tempFileName, num);
+            
+            if (numberOfFiles % 2 == 0 && fileCounter == (numberOfFiles / 2) + 1) {
+                fileCounter = 1;
+            }
+            else if (numberOfFiles % 2 != 0 && fileCounter == (numberOfFiles / 2) + 2) {
+                fileCounter = 1;
+            }
         }
-        
         
         // -------------------------------------
         
