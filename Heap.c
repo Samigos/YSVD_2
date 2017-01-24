@@ -221,7 +221,6 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     for (blockIndex = 1; blockIndex < numberOfBlocks; blockIndex++) {
         void* block;
         int currentFileDesc;
-        printf("Loop %d\n", blockIndex);
         
         if (BF_ReadBlock(initialHeapFileDesc, blockIndex, &block) < 0) {
             BF_PrintError("Error reading block in HP_SplitFiles");
@@ -259,9 +258,8 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             BF_PrintError("Error creating temp file in HP_SplitFiles");
             return -1;
         }
-	currentFileDesc = HP_OpenFile(tempFileName);
         
-        if (currentFileDesc < 0) {
+        if ((currentFileDesc = HP_OpenFile(tempFileName)) < 0) {
             BF_PrintError("Error opening temp file in HP_SplitFiles");
             return -1;
         }
