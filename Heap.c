@@ -313,6 +313,9 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
                 printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
                 if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
                     printf("\nError in HP_MergeFiles (1)\n");
+                    printf("\n numberOfFiles %d \n", numberOfFiles);
+                    numberOfFiles=0;
+                    break;
                 }
             }
             
