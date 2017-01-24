@@ -158,8 +158,6 @@ int HP_InsertEntry(int fileDesc, Record record) {
     
     // -------------------------------------
     
-    const int currentNumberOfBlocks = numberOfBlocks;
-    
     if (BF_ReadBlock(fileDesc, numberOfBlocks - 1, &block) < 0) {
         BF_PrintError("Error getting block in HP_InsertEntry");
         return -1;
@@ -169,7 +167,7 @@ int HP_InsertEntry(int fileDesc, Record record) {
     
     // -------------------------------------
     
-    if (++numberOfRecordsInBlock > (int)((BLOCK_SIZE - sizeof(int)) / sizeof(record))) {
+    if (++numberOfRecordsInBlock > (int)((BLOCK_SIZE - sizeof(int)) / sizeof(Record))) {
         numberOfRecordsInBlock = 1;
         
         if (BF_AllocateBlock(fileDesc) < 0) {
@@ -184,13 +182,13 @@ int HP_InsertEntry(int fileDesc, Record record) {
     
     // -------------------------------------
     
-    if (currentNumberOfBlocks != numberOfBlocks && BF_ReadBlock(fileDesc, numberOfBlocks - 1, &block) < 0) {
+    if (BF_ReadBlock(fileDesc, numberOfBlocks - 1, &block) < 0) {
         BF_PrintError("Error getting block in HP_InsertEntry");
         return -1;
     }
     
     memcpy(block, &numberOfRecordsInBlock, sizeof(int));
-    memcpy(block + sizeof(int) + (numberOfRecordsInBlock * sizeof(record)), &record, sizeof(record));
+    memcpy(block + sizeof(int) + (numberOfRecordsInBlock * sizeof(Record)), &record, sizeof(Record));
     
     if (BF_WriteBlock(fileDesc, numberOfBlocks - 1) < 0) {
         BF_PrintError("Error writing to block in HP_CreateFile");
