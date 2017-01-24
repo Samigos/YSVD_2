@@ -353,7 +353,6 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
     
     if ((firstFileDesc = HP_OpenFile(firstFileName)) < 0) {
         BF_PrintError("Error opening first merged temp file in HP_MergeFiles");
-        printf("%s\n", firstFileName);
         return -1;
     }
     
@@ -400,9 +399,11 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             return -1;
         }
         
-        if (BF_ReadBlock(secondFileDesc, blockIndex, &block2) < 0) {
-            BF_PrintError("Error getting block of second merged temp file in HP_MergeFiles");
-            return -1;
+        if (blockIndex < secondNumberOfBlocks) {
+            if (BF_ReadBlock(secondFileDesc, blockIndex, &block2) < 0) {
+                BF_PrintError("Error getting block of second merged temp file in HP_MergeFiles");
+                return -1;
+            }
         }
         
         int numberOfRecordsInBlockFirstFile = 0, numberOfRecordsInBlockSecondFile = 0;
