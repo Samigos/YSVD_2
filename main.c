@@ -30,9 +30,9 @@ int main(int argc, char **argv) {
     
     //HP_GetAllEntries(fd, "name", "Sung");
     
-    if (Sorted_CloseFile(fd) < 0) {
-        printf("Error closing file in main!\n");
-    }
+//    if (Sorted_CloseFile(fd) < 0) {
+//        printf("Error closing file in main!\n");
+//    }
     
     //sort heap file using 2-way merge-sort
     //Sorted_SortFile(fileName, 0);
