@@ -377,12 +377,12 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         int currentFileDesc;
         
         if (BF_ReadBlock(firstFileDesc, blockIndex, &block1) < 0) {
-            BF_PrintError("Error getting block in HP_MergeFiles");
+            BF_PrintError("Error getting block of first merged temp file in HP_MergeFiles");
             return -1;
         }
         
         if (BF_ReadBlock(secondFileDesc, blockIndex, &block2) < 0) {
-            BF_PrintError("Error getting block in HP_MergeFiles");
+            BF_PrintError("Error getting block of second merged temp file in HP_MergeFiles");
             return -1;
         }
         
