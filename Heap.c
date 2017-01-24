@@ -377,38 +377,38 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         int currentFileDesc;
         
         printf("%s, %s - firstNumberOfBlocks %d, secondNumberOfBlocks %d\n", firstFileName, secondFileName, firstNumberOfBlocks, secondNumberOfBlocks);
-        
-        int b;
-        void* bbb;
-        
-        for (b = 0; b < firstNumberOfBlocks; b++) {
-            if (BF_ReadBlock(firstFileDesc, b, &bbb) < 0) {
-                BF_PrintError("Error getting block of first merged temp file in HP_MergeFiles zzz");
-                return -1;
-            }
-            
-            if (b == 0) {
-                int fff;
-                memcpy(&fff, bbb, sizeof(int));
-                
-                printf("File id = %d\n", fff);
-            }
-            else {
-                int nnnn = 0;
-                memcpy(&nnnn, bbb, sizeof(int));
-                
-                printf("number of records in block %d: %d\n", b, nnnn);
-                
-                int recordIndex;
-                
-                for (recordIndex = 1; recordIndex <= nnnn; recordIndex++) {
-                    Record rec;
-                    memcpy(&rec, bbb + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
-                    
-                    printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
-                }
-            }
-        }
+//        
+//        int b;
+//        void* bbb;
+//        
+//        for (b = 0; b < firstNumberOfBlocks; b++) {
+//            if (BF_ReadBlock(firstFileDesc, b, &bbb) < 0) {
+//                BF_PrintError("Error getting block of first merged temp file in HP_MergeFiles zzz");
+//                return -1;
+//            }
+//            
+//            if (b == 0) {
+//                int fff;
+//                memcpy(&fff, bbb, sizeof(int));
+//                
+//                printf("File id = %d\n", fff);
+//            }
+//            else {
+//                int nnnn = 0;
+//                memcpy(&nnnn, bbb, sizeof(int));
+//                
+//                printf("number of records in block %d: %d\n", b, nnnn);
+//                
+//                int recordIndex;
+//                
+//                for (recordIndex = 1; recordIndex <= nnnn; recordIndex++) {
+//                    Record rec;
+//                    memcpy(&rec, bbb + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
+//                    
+//                    printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
+//                }
+//            }
+//        }
         
         if (BF_ReadBlock(firstFileDesc, blockIndex, &block1) < 0) {
             BF_PrintError("Error getting block of first merged temp file in HP_MergeFiles");
