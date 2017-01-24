@@ -41,12 +41,12 @@ int main(int argc, char **argv) {
     
     //int value = 11903588;
  
-  //  fd = Sorted_OpenFile("heapFileSorted0");
+    fd = Sorted_OpenFile("heapFileSorted0");
     
   //  if( fd == -1  )
   //      printf("Error opening file!\n");
     
-  //  Sorted_GetAllEntries(fd, &fieldNo, &value);
+    Sorted_GetAllEntries(fd, &fieldNo, NULL);
     
     return EXIT_SUCCESS;
 }
