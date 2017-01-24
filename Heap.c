@@ -307,7 +307,9 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             
             // -------------------------------------
             
-            HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo);
+            if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
+                
+            }
         }
         
         if (numberOfFiles % 2 == 0) {
@@ -326,22 +328,22 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
     int firstFileDesc, secondFileDesc;
     
     if ((firstFileDesc = HP_OpenFile(firstFileName)) < 0) {
-        BF_PrintError("Error getting block in HP_MergeFiles");
+        BF_PrintError("Error opening first merged temp file in HP_MergeFiles");
         return -1;
     }
     
     if ((secondFileDesc = HP_OpenFile(secondFileName)) < 0) {
-        BF_PrintError("Error getting block in HP_MergeFiles");
+        BF_PrintError("Error opening second merged temp file in HP_MergeFiles");
         return -1;
     }
     
     if ((firstNumberOfBlocks = BF_GetBlockCounter(firstFileDesc)) < 0) {
-        BF_PrintError("Error getting block counter in HP_MergeFiles");
+        BF_PrintError("Error getting block counter of first merged temp file in HP_MergeFiles");
         return -1;
     }
     
     if ((secondNumberOfBlocks = BF_GetBlockCounter(secondFileDesc)) < 0) {
-        BF_PrintError("Error getting block counter in HP_MergeFiles");
+        BF_PrintError("Error getting block counter of second merged temp file in HP_MergeFiles");
         return -1;
     }
     
@@ -361,8 +363,8 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             return -1;
         }
         
-        int numberOfRecordsInBlockFirstFile, numberOfRecordsInBlockSecondFile;
-        
+        int numberOfRecordsInBlockFirstFile, numberOfRecordsInBlockSecondFile = 0;
+
         memcpy(&numberOfRecordsInBlockFirstFile, block1, sizeof(int));
         memcpy(&numberOfRecordsInBlockSecondFile, block2, sizeof(int));
         
