@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
         printf("Error opening file in main!\n");
     
     insert_Entries(fd);
-    Sorted_GetAllEntries(fd, &fieldNo, NULL);
+    //Sorted_GetAllEntries(fd, &fieldNo, NULL);
 
     if (Sorted_CloseFile(fd) < 0) {
         printf("Error closing file in main!\n");
@@ -82,7 +82,7 @@ void insert_Entries(int fd) {
         pch++;
         pch[strlen(pch) - 1] = 0;
         strncpy(record.city, pch, sizeof(record.city));
-        
+        printf("%d,\n%s,\n%s,\n%s\n\n", record.id, record.name, record.surname, record.city);
         assert(!Sorted_InsertEntry(fd, record));
     }
     
