@@ -494,7 +494,6 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
     // -------------------------------------
     
     printf("Creating new %s file\n", tempFileName);
-    HP_GetAllEntries(tempFileDesc, 1, NULL);
 
     void* block;
     int newFileDesc;
@@ -561,6 +560,13 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
                 HP_InsertEntry(newFileDesc, rec);
             }
         }
+    }
+    
+    HP_GetAllEntries(newFileDesc, 1, NULL);
+    
+    if (HP_CloseFile(newFileDesc) < 0) {
+        BF_PrintError("Error closing initial heap file in HP_MergeFiles");
+        return -1;
     }
     
     // -------------------------------------
