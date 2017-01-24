@@ -442,6 +442,8 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
             strcpy(tempFileName, "temp_");
             
             if (sign == TRUE) {
+                sign = FALSE;
+                
                 sprintf(num, "%d", 1);
                 strcat(tempFileName, num);
             }
