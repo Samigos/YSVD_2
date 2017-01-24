@@ -125,5 +125,5 @@ int Sorted_checkSortedFile(char* fileName, int fieldNo) {
 }
 
 void Sorted_GetAllEntries(int fileDesc, int* fieldNo, void* value) {
-    
+    HP_GetAllEntries(fileDesc, *fieldNo, value);
 }

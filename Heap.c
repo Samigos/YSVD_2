@@ -636,7 +636,7 @@ Record* mergeSortedRecords(Record* Array1, Record* Array2, const int numOfRecord
 // pass the read data, to struct rec. Then, having in mind the
 // fieldName, print the corresponding entries.
 
-void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
+void HP_GetAllEntries(int fileDesc, int fieldNo, void* value) {
     void* block;
     int numOfBlocks;
     
@@ -653,7 +653,7 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
     
     int blockIndex, recordIndex;
     
-    if (strcmp(fieldName, "id") == 0) {
+    if (fieldNo == 0) {
         int valueFound = FALSE;
         
         for (blockIndex = 1; blockIndex < numOfBlocks; blockIndex++) {
@@ -695,17 +695,17 @@ void HP_GetAllEntries(int fileDesc, char* fieldName, void* value) {
             for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock; recordIndex++) {
                 memcpy(&rec, block + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
 
-                if (strcmp(fieldName, "all") == 0 && rec.id > 0)
+                if (value == NULL)
                     printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
-                else if (strcmp(fieldName, "name") == 0) {
+                else if (fieldNo == 1) {
                     if (strcmp(rec.name, (char*)value) == 0)
                         printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
                 }
-                else if (strcmp(fieldName, "surname") == 0) {
+                else if (fieldNo == 2) {
                     if (strcmp(rec.surname, (char*)value) == 0)
                         printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
                 }
-                else if (strcmp(fieldName, "city") == 0) {
+                else if (fieldNo == 3) {
                     if (strcmp(rec.city, (char*)value) == 0)
                         printf("%d,\n%s,\n%s,\n%s\n\n", rec.id, rec.name, rec.surname, rec.city);
                 }

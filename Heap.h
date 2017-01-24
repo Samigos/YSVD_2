@@ -13,11 +13,11 @@ typedef struct Record {
 	char city[25];
 } Record;
 
-int HP_CreateFile(char* fileName);
-int HP_OpenFile(char* fileName);
-int HP_CloseFile(int fileDesc);
-int HP_InsertEntry(int fileDesc, Record record);
-void HP_GetAllEntries(int fileDesc, char* fieldName, void* value);
+int HP_CreateFile(char*);
+int HP_OpenFile(char*);
+int HP_CloseFile(int);
+int HP_InsertEntry(int, Record);
+void HP_GetAllEntries(int, int, void*);
 int HP_SplitFiles(char*, const int);
 int HP_DeleteFile(const char*);
 int HP_MergeFiles(char*, char*, char*, const int);

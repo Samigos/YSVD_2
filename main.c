@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
     }
     
     //sort heap file using 2-way merge-sort
-    Sorted_SortFile(fileName, 0);
+    //Sorted_SortFile(fileName, 0);
  //   Sorted_checkSortedFile("heapFileSorted", fieldNo);
     
     //get all entries with value
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
   //  if( fd == -1  )
   //      printf("Error opening file!\n");
     
-  //  Sorted_GetAllEntries(fd, &fieldNo, &value);
+    Sorted_GetAllEntries(fd, &fieldNo, NULL);
     
     return EXIT_SUCCESS;
 }
