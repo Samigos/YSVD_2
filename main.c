@@ -12,7 +12,7 @@ void insert_Entries(int);
 
 int main(int argc, char **argv) {
     int fd;
-    int fieldNo = 0;
+    int fieldNo;
    
     BF_Init();
     
@@ -41,12 +41,12 @@ int main(int argc, char **argv) {
     
     //int value = 11903588;
  
-    fd = Sorted_OpenFile("heapFileSorted0");
+  //  fd = Sorted_OpenFile("heapFileSorted0");
     
-    if( fd == -1  )
-        printf("Error opening file!\n");
+  //  if( fd == -1  )
+  //      printf("Error opening file!\n");
     
-    Sorted_GetAllEntries(fd, &fieldNo, NULL);
+  //  Sorted_GetAllEntries(fd, &fieldNo, &value);
     
     return EXIT_SUCCESS;
 }
