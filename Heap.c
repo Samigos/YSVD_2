@@ -289,36 +289,80 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     // -------------------------------------
     // Now we need to sort and merge the files
     
-    int k;
+    int k, savedNumberOfFiles = numberOfFiles;
     
     while (numberOfFiles >= 2) {
-        for (k = 0; k < numberOfFiles; k += 2) {
-            char fileName1[15], fileName2[15];
-            strcpy(fileName1, "temp_");
-            
-            char num[7];
-            sprintf(num, "%d", k+1);
-            strcat(fileName1, num);
-            
-            // -------------------------------------
-            
-            strcpy(fileName2, "temp_");
-            sprintf(num, "%d", k+2);
-            strcat(fileName2, num);
-            
-            // -------------------------------------
-            
-            printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
-            if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
-                
-            }
-        }
-        
         if (numberOfFiles % 2 == 0) {
+            for (k = 0; k < numberOfFiles; k += 2) {
+                char fileName1[15], fileName2[15];
+                strcpy(fileName1, "temp_");
+                
+                char num[7];
+                sprintf(num, "%d", k+1);
+                strcat(fileName1, num);
+                
+                // -------------------------------------
+                
+                strcpy(fileName2, "temp_");
+                sprintf(num, "%d", k+2);
+                strcat(fileName2, num);
+                
+                // -------------------------------------
+                
+                printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
+                if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
+                    printf("\nError in HP_MergeFiles (1)\n");
+                }
+            }
+            
             numberOfFiles /= 2;
         }
         else {
+            for (k = 0; k < numberOfFiles-1; k += 2) {
+                char fileName1[15], fileName2[15];
+                strcpy(fileName1, "temp_");
+                
+                char num[7];
+                sprintf(num, "%d", k+1);
+                strcat(fileName1, num);
+                
+                // -------------------------------------
+                
+                strcpy(fileName2, "temp_");
+                sprintf(num, "%d", k+2);
+                strcat(fileName2, num);
+                
+                // -------------------------------------
+                
+                printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
+                if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
+                    printf("\nError in HP_MergeFiles (2)\n");
+                }
+            }
+            
             numberOfFiles = (numberOfFiles / 2) + 1;
+            
+            if (numberOfFiles == 2) {
+                char fileName1[15], fileName2[15];
+                strcpy(fileName1, "temp_");
+                
+                char num[7];
+                sprintf(num, "%d", 1);
+                strcat(fileName1, num);
+                
+                // -------------------------------------
+                
+                strcpy(fileName2, "temp_");
+                sprintf(num, "%d", savedNumberOfFiles);
+                strcat(fileName2, num);
+                
+                // -------------------------------------
+                
+                printf("\nCalling HP_MergeFiles, for %s and %s\n", fileName1, fileName2);
+                if (HP_MergeFiles(initialHeapFileName, fileName1, fileName2, fieldNo) < 0) {
+                    printf("\nError in HP_MergeFiles (3)\n");
+                }
+            }
         }
     }
     
@@ -433,7 +477,7 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         
         // -------------------------------------
         
-        printf("Creating %s merged heap file... (blockIndex %d)\n", tempFileName, blockIndex);
+        printf("Creating %s merged heap file...\n", tempFileName);
         
         if (HP_CreateFile(tempFileName) < 0) {
             BF_PrintError("Error creating merged heap file in HP_MergeFiles");
