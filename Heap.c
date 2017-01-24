@@ -497,7 +497,7 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
     printf("Creating new %s file\n", tempFileName);
 
     void* block;
-    int newFileDesc;
+    int newFileDesc, finalNumberOfBlocks;
     
     if (HP_CreateFile(tempFileName) < 0) {
         BF_PrintError("Error creating merged heap file in HP_MergeFiles");
@@ -509,9 +509,14 @@ int HP_MergeFiles(char* initialHeapFileName, char* firstFileName, char* secondFi
         return -1;
     }
     
+    if ((finalNumberOfBlocks = BF_GetBlockCounter(tempFileDesc)) < 0) {
+        BF_PrintError("Error getting final block counter in HP_MergeFiles");
+        return -1;
+    }
+    
     // -------------------------------------
     
-    for (blockIndex = 0; blockIndex < (firstNumberOfBlocks + secondNumberOfBlocks); blockIndex++) {
+    for (blockIndex = 0; blockIndex < finalNumberOfBlocks; blockIndex++) {
         if (BF_ReadBlock(tempFileDesc, blockIndex, &block) < 0) {
             BF_PrintError("Error getting block of first merged temp file in HP_MergeFiles zzz");
             return -1;
