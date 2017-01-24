@@ -259,8 +259,9 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
             BF_PrintError("Error creating temp file in HP_SplitFiles");
             return -1;
         }
+	currentFileDesc = HP_OpenFile(tempFileName);
         
-        if ((currentFileDesc = HP_OpenFile(tempFileName) < 0)) {
+        if (currentFileDesc < 0) {
             BF_PrintError("Error opening temp file in HP_SplitFiles");
             return -1;
         }
