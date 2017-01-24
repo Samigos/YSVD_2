@@ -27,15 +27,12 @@ int main(int argc, char **argv) {
     
     insert_Entries(fd);
     
-    
-    //HP_GetAllEntries(fd, "name", "Sung");
-    
-//    if (Sorted_CloseFile(fd) < 0) {
-//        printf("Error closing file in main!\n");
-//    }
+    if (Sorted_CloseFile(fd) < 0) {
+        printf("Error closing file in main!\n");
+    }
     
     //sort heap file using 2-way merge-sort
-    //Sorted_SortFile(fileName, 0);
+    Sorted_SortFile(fileName, 0);
  //   Sorted_checkSortedFile("heapFileSorted", fieldNo);
     
     //get all entries with value
@@ -49,7 +46,7 @@ int main(int argc, char **argv) {
   //  if( fd == -1  )
   //      printf("Error opening file!\n");
     
-    Sorted_GetAllEntries(fd, &fieldNo, NULL);
+  //  Sorted_GetAllEntries(fd, &fieldNo, &value);
     
     return EXIT_SUCCESS;
 }

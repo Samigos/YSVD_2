@@ -663,7 +663,7 @@ void HP_GetAllEntries(int fileDesc, int fieldNo, void* value) {
             }
             
             int numberOfRecordsInBlock;
-            memcpy(&numberOfRecordsInBlock, block , sizeof(int));
+            memcpy(&numberOfRecordsInBlock, block, sizeof(int));
             
             for (recordIndex = 1; recordIndex <= numberOfRecordsInBlock; recordIndex++) {
                 memcpy(&rec, block + sizeof(int) + (recordIndex * sizeof(Record)), sizeof(Record));
