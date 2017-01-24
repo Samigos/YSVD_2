@@ -221,6 +221,7 @@ int HP_SplitFiles(char* initialHeapFileName, const int fieldNo) {
     for (blockIndex = 1; blockIndex < numberOfBlocks; blockIndex++) {
         void* block;
         int currentFileDesc;
+        printf("Loop %d\n", blockIndex);
         
         if (BF_ReadBlock(initialHeapFileDesc, blockIndex, &block) < 0) {
             BF_PrintError("Error reading block in HP_SplitFiles");
